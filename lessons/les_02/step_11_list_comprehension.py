@@ -1,7 +1,7 @@
 import time
 
 '''
-list !comprehension! python
+list !comprehension! python (СПИСКОВОЕ ВКЛЮЧЕНИЕ)
 
 List comprehension offers a shorter syntax
 when you want to create a new list based on the values of an existing list.
