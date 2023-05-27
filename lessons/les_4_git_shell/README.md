@@ -19,6 +19,10 @@
 - `micro` - advanced terminal editor
 
 
+### Git
+- git reflog
+- git reset --hard 160d434
+
 
 ```shell
 grep -n -B 2 -A 3 tail README.md
