@@ -8,7 +8,7 @@ worker - параллельные процессы (python run.py в разны�
 
 def say_hello():
     # global user
-    print(f'hello, {user}')
+#    print(f'hello, {user}')
     user = 'Boris'
 
 
