@@ -12,8 +12,8 @@ def power_numbers(*numbers) -> list:
     <<< [1, 4, 25, 49]
     """
 
-    result = [number ** 2 for number in numbers]
-    return result
+    return [number ** 2 for number in numbers]
+
 
 # filter types
 ODD = "odd"
