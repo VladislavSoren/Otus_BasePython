@@ -55,7 +55,6 @@ class AdminUser(User):
             raise Exception('too old admin')
 
 
-
 user_1 = User('Vlad', '30')
 user_2 = AdminUser('Ben', '35', 'admin')
 print(user_1.age)

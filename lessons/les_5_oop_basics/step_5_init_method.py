@@ -17,10 +17,6 @@ class User:
         pass
 
 
-class AdminUser(User):
-    pass
-
-
 user_1 = User()
 print(vars(user_1))
 user_1.age = 25

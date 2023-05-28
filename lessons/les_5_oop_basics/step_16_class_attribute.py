@@ -1,6 +1,6 @@
 '''
 
-self - это будущий объект
+self - это будущий объект (конкретный объект с конкретным состоянием)
 json - передаём состояния на расстоянии)
 
 '''
@@ -50,11 +50,12 @@ class AdminUser(User):
         if self._age > self.MAX_AGE:
             raise Exception('too old admin')
 
+
 class StaffUser(User):
     pass
 
 
-user_1 = User('Vlad', '30')  # instance
+user_1 = User('Vlad', '30')  # instance (# __call__ -> __new__ -> __init__)
 user_2 = AdminUser('Ben', '35', 'admin')
 user_3 = StaffUser('Ben', '40',)
 print(user_1.age)

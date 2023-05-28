@@ -27,7 +27,7 @@ class User:
         self._age += 1
 
 
-user_1 = User('30')
+user_1 = User('Vlad', '30')
 
 print(vars(user_1))
 print(user_1.age)
