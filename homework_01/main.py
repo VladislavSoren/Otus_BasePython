@@ -57,6 +57,6 @@ def filter_numbers(int_numbers_list, filter_type) -> list:
     elif filter_type == PRIME:
         result = list(filter(is_prime, int_numbers_list))
     else:
-        result = ['Uknown filter_type']
+        result = ['Unknown filter_type']
 
     return result
