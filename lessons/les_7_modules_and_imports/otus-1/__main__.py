@@ -36,6 +36,7 @@ from utils import (get_currency_rate,
 
 print(*sys.path, sep='\n')
 
+
 def main():
     print('started __main__.py')
     # currency_rate = get_currency_rate()

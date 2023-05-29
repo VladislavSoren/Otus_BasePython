@@ -1,5 +1,7 @@
-BASE_CURRENCY = 1.5
 
+# from helpers import  BASE_CURRENCY
+
+BASE_CURRENCY = 1.5
 
 def get_currency_rate(currency='USD'):
     return {'10:00': 1.5,
