@@ -1,16 +1,19 @@
 from abc import ABC
 from homework_02.exceptions import LowFuelError, NotEnoughFuel
 
+
 class Vehicle(ABC):
 
-    #  Инициализация атрибутов класса
-    def __init__(self, weight=5, started=False, fuel=5, fuel_consumption=1):
+    # Установка атрибутов класса
+    started = False
+
+    #  Инициализация атрибутов экземпляра класса
+    def __init__(self, weight=5, fuel=5, fuel_consumption=1):
         self.weight = weight
-        self.started = started
         self.fuel = fuel
         self.fuel_consumption = fuel_consumption
 
-    #
+    # Проверка на наличие топлива и установка флага started
     def start(self):
 
         if not self.started:
@@ -19,8 +22,8 @@ class Vehicle(ABC):
             else:
                 raise LowFuelError
 
-    #
-    def move(self):
+    # Проверка достаточности топлива на преодоление переданной дистанции
+    def move(self, new_weight):
 
         """
         Vc - расход на текущую дистанцию (л)
@@ -30,6 +33,9 @@ class Vehicle(ABC):
 
         Vc = W * F
         """
+
+        # Обновляем значение атрибута задания дистанции на переданное значение
+        self.weight = new_weight
 
         # Рассчитываем расход
         volume_cons = self.weight * self.fuel_consumption
