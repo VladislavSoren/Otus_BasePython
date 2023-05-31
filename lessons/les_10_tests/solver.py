@@ -6,10 +6,12 @@ class Solver:
         self.b = b
 
     def add(self):
-        return self.a + self.b
+        result = self.a + self.b
+        print(result)
+        return result
 
 
-
-
+    def mul(self):
+        return self.a * self.b
 
 
