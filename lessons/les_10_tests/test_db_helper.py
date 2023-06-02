@@ -13,6 +13,9 @@ Pytest один раз на тест инициализирует фисктур
 Программист обычно создает фиктивный объект для проверки поведения какого-либо другого объекта,
 почти так же, как конструктор автомобилей использует манекен для краш-тестов
 для имитации динамического поведения человека. при ударах автомобиля.
+
+# autospec - автоматическая спецификация, т.е. можем использовать только существующие методы переданного класса
+или функции переданного модуля и т.п.
 """
 
 from string import ascii_letters
@@ -20,10 +23,12 @@ from random import randint, choices
 from db_helper import (User,
                        get_engine,
                        get_connection,
+                       get_user,
                        Engine,
                        Connection,)
 
 from pytest import fixture
+from unittest import mock
 
 @fixture()
 def user() -> User:
@@ -78,3 +83,31 @@ class Test_User:
         assert user.age == some_age
         # 1/0
         # pass
+
+
+@mock.patch("db_helper.get_connection", autospec=True)  # autospec - автоматическая спецификация (можем использовать)
+def test_get_user(mocked_get_connection, user):  # Производим мокирование get_connection и инстанс фикстуры user
+
+    # мокируем соединение, которое возвращается функцией get_connection (которая у нас тоже замокирована)
+    # по сути мокирует "conn = get_connection()"
+    mock_conn = mocked_get_connection.return_value
+
+    # мокируем conn.get_user из get_user
+    # по сути мокирует "conn.get_user(username)"
+    mock_conn.get_user.return_value = user
+
+    username = user.username
+    # return conn.get_user(username) уже под капотом мокирован, т.е. по любому вернёт user
+    u = get_user(username)
+
+    assert u is user
+
+    mocked_get_connection.assert_called_once_with()
+    mock_conn.get_user.assert_called_once_with(username)
+    # mock_conn.get_user.assert_called_once_with('xsxs')
+
+
+"""
+По факту, мы не создавали никаких соединений с БД, но с помощью мокирования прошли тест!!!
+Так сделали все пробросы пустышками, которые удовлетворили условиям теста
+"""

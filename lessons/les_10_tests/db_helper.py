@@ -21,6 +21,9 @@ def get_engine(url=None):
 
 
 def get_connection(engine=None):
+
+    a =1
+
     if engine is None:
         engine = get_engine()
     return Connection(engine)
