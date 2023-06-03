@@ -14,6 +14,7 @@ from .schemas import User, UserIn
 
 class Storage(BaseModel):
     users: dict[int, User] = {}  # на базе изменяемых объектов можно только в pydantic
+    users_by_token: dict[str, User] = {}
     last_id: int = 0
 
     @property
@@ -27,6 +28,7 @@ class Storage(BaseModel):
             username=username,
         )
         self.users[user.id] = user
+        self.users_by_token[user.token] = user
         return user
 
 
@@ -35,6 +37,7 @@ storage = Storage()
 
 def get_users() -> list[User]:
     return list(storage.users.values())
+    # return list(storage.users_by_token.values())
 
 
 def create_user(user_in: UserIn) -> User:
@@ -43,4 +46,9 @@ def create_user(user_in: UserIn) -> User:
 
 def get_user_by_id(user_id: int) -> User | None:
     return storage.users.get(user_id)
+
+
+def get_user_by_token(token: str) -> User | None:
+    return storage.users_by_token.get(token)
+
 

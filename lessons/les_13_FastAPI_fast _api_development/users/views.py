@@ -1,16 +1,17 @@
 """
 СЛОЙ ВЗАИМОДЕЙСТВИЯ С СЕТЬЮ
 
-Здесь view функции
+Здесь view функции (едставления)
 
 По сути готовим контракт с фронтендом:
 Без внутренней логики прописываем, что принимаем и отдаём
 """
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 
 from .schemas import UserOut, UserIn, User
 from . import crud
+from . dependencies import get_user_by_auth_token
 
 router = APIRouter(
     tags=['Users'],
@@ -24,6 +25,12 @@ router = APIRouter(
 def get_users():
     # raise NotImplemented
     return crud.get_users()
+
+
+# Функция get_me зависит от функции передачи юзера по токену get_user_by_auth_token
+@router.get('/me', response_model=UserOut)
+def get_me(user: User = Depends(get_user_by_auth_token)):
+    return user
 
 
 @router.post(
