@@ -30,8 +30,3 @@ print(json.method_calls)
 
 
 # Managing a Mock’s Return Value
-
-
-
-
-
