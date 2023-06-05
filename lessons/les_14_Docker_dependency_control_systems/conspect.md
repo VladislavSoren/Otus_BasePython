@@ -55,7 +55,24 @@ pipenv install pytest -d
 
 
 ## Containerization vs Virtualization:
+Создаётся контейнер на основе образа ubuntu и в интерактивном режиме запускается bash:
+```shell
+docker run -it ubuntu bash
+```
+> Обязательно перед установкой каких либо пакетов сделать `apt update` и `apt  upgrade`
 
+В докерфайле в первую очередь нужно устанавливать все зависимости.
+
+ 
+Создаём образ по Dockerfile в текущей директории
+```shell
+docker build -t app .
+```
+
+Запускаем приложение
+```shell
+docker run -p 9999:8000 --name dev_app_5 -it app
+```
 
 
 
