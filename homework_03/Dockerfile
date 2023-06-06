@@ -1,4 +1,6 @@
-# FROM python:3.9-buster
+# Создание образа: docker build -t app . 
+# Запуск контейнера: docker run -p 8000:8000 --name dev_app_1 -it app
+
 FROM python:3.10
 
 # Флаг, чтобы не использовалась буферизация логов (в докере не оч корректно работает)
@@ -27,5 +29,6 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 # Указываем что внешний порт это 8000
 EXPOSE 8000
 
-# "uvicorn main:app --host 0.0.0.0 --port 8000"
+# Запуск из терминала контейнера: "uvicorn main:app --host 0.0.0.0 --port 8000"
+
 

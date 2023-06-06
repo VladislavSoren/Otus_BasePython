@@ -28,7 +28,7 @@ def get_users():
 
 
 # Функция get_me зависит от функции передачи юзера по токену get_user_by_auth_token
-@router.get('/me', response_model=UserOut)
+@router.get('/me/', response_model=UserOut)
 def get_me(user: User = Depends(get_user_by_auth_token)):
     return user
 
@@ -43,7 +43,7 @@ def create_user(user_in: UserIn):
 
 
 @router.get(
-    "/{user_id}",
+    "/{user_id}/",
     response_model=UserOut,
     # Переопределяем статусы ошибок
     responses={
@@ -73,22 +73,6 @@ def get_user_by_id(user_id: int) -> User:
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"User №{user_id} is not found!"
-    )
-
-
-# Новый viewer
-@router.get(
-    "/ping/",
-    response_model=dict[str, str],
-    # Переопределяем статусы ошибок
-)
-def ping_pong() -> dict[str, str]:
-    pong_answer: dict[str, str] = crud.get_pong()
-    if pong_answer:
-        return pong_answer
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"User №{pong_answer} is not found!"
     )
 
 

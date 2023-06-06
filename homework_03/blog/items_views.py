@@ -6,7 +6,7 @@ router = APIRouter(
 )
 
 
-@router.get("")
+@router.get("/")
 def get_items():
     return {
         "data": [
@@ -16,7 +16,7 @@ def get_items():
     }
 
 
-@router.get("/{item_id}")
+@router.get("/{item_id}/")
 def get_items(item_id: str):  # типизация через pydantic строгая!
     return {
         "data": [
