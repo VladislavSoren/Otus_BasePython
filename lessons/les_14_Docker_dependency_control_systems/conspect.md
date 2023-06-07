@@ -74,5 +74,12 @@ docker build -t app .
 docker run -p 9999:8000 --name dev_app_5 -it app
 ```
 
+Остановить все контейнеры
+docker stop $(docker ps -a -q)
 
+Удалить все докер контейнеры
+docker rm $(docker ps -a -q)
+
+Удалить все образы
+docker rmi $(docker images -q)
 
