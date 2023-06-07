@@ -17,7 +17,8 @@ router = APIRouter(
 )
 def ping_pong() -> dict[str, str]:
     pong_answer: dict[str, str] = crud.get_pong()
-    if pong_answer:
+    # Условие "if pong_answer" заменено, т.к. пустой словарь - тоже нормальный ответ
+    if pong_answer is not None:
         return pong_answer
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,

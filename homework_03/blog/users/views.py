@@ -12,6 +12,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from .schemas import UserOut, UserIn, User
 from . import crud
 from . dependencies import get_user_by_auth_token
+from . import errors_messages
 
 router = APIRouter(
     tags=['Users'],
@@ -47,23 +48,7 @@ def create_user(user_in: UserIn):
     response_model=UserOut,
     # Переопределяем статусы ошибок
     responses={
-        status.HTTP_404_NOT_FOUND: {
-            "description": "User not found",
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "detail": {
-                                "title": "Detail",
-                                "type": "string",
-                                "example": "User!!! #0 not found!",
-                            },
-                        },
-                    }
-                }
-            },
-        },
+        status.HTTP_404_NOT_FOUND: errors_messages.user_not_found,
     },
 )
 def get_user_by_id(user_id: int) -> User:
