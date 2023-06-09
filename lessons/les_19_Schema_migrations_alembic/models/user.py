@@ -7,7 +7,9 @@ from sqlalchemy import (  # black может делать переносы в а
     Boolean,
     false,
     DateTime,
-    func)
+    func,
+    Text,
+)
 from sqlalchemy.orm import (
     relationship,
 )
@@ -29,6 +31,13 @@ class User(CreatedAtMixin, Base):
         server_default=false(),  # вызываем false, чтобы код был совместный для всех диалектов
         nullable=False,
     )
+
+    # bio = Column(
+    #     Text,
+    #     default="",
+    #     server_default="",  # вызываем false, чтобы код был совместный для всех диалектов
+    #     nullable=False,
+    # )
 
     # Эти поля никак не свзяаны с SQL БД
     # Они нужны для того чтобы мы могли в коде обращаться к СВЯЗАННЫМ сущностям

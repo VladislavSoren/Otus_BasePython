@@ -4,10 +4,7 @@ from sqlalchemy import (  # black может делать переносы в а
     Column,
     Integer,
     String,
-    Boolean,
-    false,
-    DateTime,
-    func,
+    Text,
     ForeignKey
 )
 from sqlalchemy.orm import (
@@ -29,6 +26,13 @@ class Author(CreatedAtMixin, Base):
         ForeignKey("blog_users.id"),
         nullable=False,
         unique=True,
+    )
+
+    bio = Column(
+        Text,
+        default="",
+        server_default="",  # вызываем false, чтобы код был совместный для всех диалектов
+        nullable=False,
     )
 
     # Эти поля никак не свзяаны с SQL БД
