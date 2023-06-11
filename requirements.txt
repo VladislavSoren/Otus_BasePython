@@ -9,6 +9,7 @@ sqlalchemy==1.4.48
 psycopg2==2.9.6
 alembic==1.11.1
 black==23.3.0
+aiohttp==3.8.4
 
 
 
