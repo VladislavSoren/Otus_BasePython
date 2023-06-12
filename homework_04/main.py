@@ -84,10 +84,13 @@ async def async_main():
     # getting users and posts from web
     users_objs, posts_objs = await get_users_and_posts()
 
-    await asyncio.gather(
-        create_users(Session, users_objs),
-        create_posts(Session, posts_objs),
-    )
+    await create_users(Session, users_objs),
+    await create_posts(Session, posts_objs)
+
+    # await asyncio.gather(
+    #     create_users(Session, users_objs),
+    #     create_posts(Session, posts_objs),
+    # )
 
 
 # async def async_main():
