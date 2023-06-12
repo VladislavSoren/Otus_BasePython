@@ -497,9 +497,9 @@ async def main():
         # tags = await find_tags(session, "numpy")
         # await add_tags_to_posts(session, posts, tags)
 
-        author_tim = find_authors_by_user_username(session, "Tim")
-        tags = find_tags(session, 'news', 'python', 'git')
-        create_post_with_tags(session, author_tim, "New Python Tool", tags)
+        # author_tim = find_authors_by_user_username(session, "Tim")
+        # tags = find_tags(session, 'news', 'python', 'git')
+        # create_post_with_tags(session, author_tim, "New Python Tool", tags)
 
         # auto_assoc_tags_with_posts(session)
 
