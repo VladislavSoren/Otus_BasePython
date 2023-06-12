@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 os.environ[
     "SQLALCHEMY_PG_CONN_URI"
-] = "postgresql+asyncpg://username:passwd@0.0.0.0:8888/blog"
+] = "postgresql+asyncpg://username:passwd@0.0.0.0:5432/blog"
 # os.environ["DB_ECHO"] = "False"
 DB_ECHO = False
 DB_APP_PREFIX = "home_"
