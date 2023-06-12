@@ -48,3 +48,6 @@ class Post(CreatedAtMixin, Base):
 
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.id}, title={self.title!r}, author_id={self.author_id})"
+
+    def __repr__(self):
+        return str(self)
