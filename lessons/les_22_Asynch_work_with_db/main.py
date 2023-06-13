@@ -296,12 +296,23 @@ def show_authors_with_users_and_posts(session: Session):
             print("=", post)
 
 
-def auto_assoc_tags_with_posts(session: Session):
-    tags: Iterable[Tag] = session.query(Tag).all()
-    posts: Iterable[Post] = session.query(Post).options(
-        # Нагибаем проблему N + 1
-        selectinload(Post.tags)  # selectinload так как связь ко многим (уберутся дубли)
-    ).all()
+async def auto_assoc_tags_with_posts(session: AsyncSession):
+    posts_stmt: Iterable[Post] = (
+        select(Post)
+        .options(
+            # Нагибаем проблему N + 1
+            selectinload(Post.tags))
+        )
+
+    result_tags: Result
+    result_posts: Result
+    result_tags, result_posts = await asyncio.gather(
+        session.execute(select(Tag)),
+        session.execute(posts_stmt)
+    )
+    tags: list[Tag] = result_tags.scalars().all()
+    posts: list[Post] = result_posts.scalars().all()
+
     for post in posts:
         title = post.title.lower()
         for tag in tags:
@@ -310,7 +321,7 @@ def auto_assoc_tags_with_posts(session: Session):
 
     # add НЕ нужно как так у каждого поста и тега есть привязка к сесссии, т.к. мы их достали из базы
     # Завершаем транзакцию
-    session.commit()
+    await session.commit()
 
 
 def find_posts_with_any_of_tags(session: Session, *tags_names: str) -> Iterable[Post]:
@@ -501,7 +512,7 @@ async def main():
         # tags = find_tags(session, 'news', 'python', 'git')
         # create_post_with_tags(session, author_tim, "New Python Tool", tags)
 
-        # auto_assoc_tags_with_posts(session)
+        await auto_assoc_tags_with_posts(session)
 
         # find_posts_with_any_of_tags(session, 'python', 'git')
 
