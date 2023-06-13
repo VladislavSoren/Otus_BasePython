@@ -1,17 +1,15 @@
 """
-СЛОЙ ВЗАИМОДЕЙСТВИЯ С СЕТЬЮ
 
-Здесь view функции (едставления)
-
-По сути готовим контракт с фронтендом:
-Без внутренней логики прописываем, что принимаем и отдаём
 """
 
 from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from .schemas import UserOut, UserIn, User
+from .schemas import UserOut, UserIn
 from . import crud
-from . dependencies import get_user_by_auth_token
+from .dependencies import get_user_by_auth_token
+from models import User
+from models.db_async import get_session
 
 router = APIRouter(
     tags=['Users Async'],
@@ -22,15 +20,10 @@ router = APIRouter(
     "/",
     response_model=list[UserOut],
 )
-def get_users():
+async def get_users(session: AsyncSession = Depends(get_session)):
     # raise NotImplemented
-    return crud.get_users()
+    return await crud.get_users(session=session)
 
-
-# Функция get_me зависит от функции передачи юзера по токену get_user_by_auth_token
-@router.get('/me', response_model=UserOut)
-def get_me(user: User = Depends(get_user_by_auth_token)):
-    return user
 
 
 @router.post(
@@ -38,8 +31,17 @@ def get_me(user: User = Depends(get_user_by_auth_token)):
     response_model=UserOut,
     description='Creates a user',
 )
-def create_user(user_in: UserIn):
-    return crud.create_user(user_in=user_in)
+async def create_user(
+        user_in: UserIn,
+        session: AsyncSession = Depends(get_session),
+):
+    return await crud.create_user(session=session, user_in=user_in)
+
+
+# Stay in Sync
+@router.get('/me', response_model=UserOut)
+async def get_me(user: User = Depends(get_user_by_auth_token)):
+    return user
 
 
 @router.get(
@@ -66,20 +68,15 @@ def create_user(user_in: UserIn):
         },
     },
 )
-def get_user_by_id(user_id: int) -> User:
-    user: User | None = crud.get_user_by_id(user_id=user_id)
+async def get_user_by_id(
+        user_id: int,
+        session: AsyncSession = Depends(get_session),
+) -> User:
+    user: User | None = await crud.get_user_by_id(session=session, user_id=user_id)
     if user:
         return user
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"User №{user_id} is not found!"
     )
-
-
-
-
-
-
-
-
-
+# Функция get_me зависит от функции передачи юзера по токену get_user_by_auth_token

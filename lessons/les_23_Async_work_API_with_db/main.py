@@ -23,7 +23,10 @@ app.include_router(
     users_sync_router,
     prefix='/users/sync',
 )
-
+app.include_router(
+    users_async_router,
+    prefix='/users/async',
+)
 
 # Обработка запроса на корень нашего сервиса
 @app.get("/")

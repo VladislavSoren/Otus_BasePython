@@ -1,54 +1,33 @@
 """
-СЛОЙ ВЗАИМОДЕЙСТВИЯ С ДАННЫМИ
-
 CRUD (Create Read Update Delete)
-
-Модуль с функциями выполнения запрошенных действий
-
 """
+from sqlalchemy import select
+from sqlalchemy.engine import Result
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from pydantic import BaseModel
-
-from .schemas import User, UserIn
-
-
-class Storage(BaseModel):
-    users: dict[int, User] = {}  # на базе изменяемых объектов можно только в pydantic
-    users_by_token: dict[str, User] = {}
-    last_id: int = 0
-
-    @property
-    def next_id(self) -> int:
-        self.last_id += 1
-        return self.last_id
-
-    def create_user(self, username: str):
-        user = User(
-            id=self.next_id,
-            username=username,
-        )
-        self.users[user.id] = user
-        self.users_by_token[user.token] = user
-        return user
+from .schemas import UserIn
+from models import User
 
 
-storage = Storage()
+async def get_users(session: AsyncSession) -> list[User]:
+    stmt = select(User)
+    result: Result = await session.execute(stmt)
+    return result.scalars().all()
 
 
-def get_users() -> list[User]:
-    return list(storage.users.values())
-    # return list(storage.users_by_token.values())
+async def create_user(session: AsyncSession, user_in: UserIn) -> User:
+    user = User(**user_in.dict())
+    session.add(User)
+    await session.commit()
+    # await session.refresh()
+    return user
 
 
-def create_user(user_in: UserIn) -> User:
-    return storage.create_user(username=user_in.username)
+async def get_user_by_id(session: AsyncSession, user_id: int) -> User | None:
+    return await session.get(User, user_id)
 
 
-def get_user_by_id(user_id: int) -> User | None:
-    return storage.users.get(user_id)
-
-
-def get_user_by_token(token: str) -> User | None:
-    return storage.users_by_token.get(token)
-
-
+async def get_user_by_token(session: AsyncSession, token: str) -> User | None:
+    stmt = select(User).where(User.token == token)
+    result: Result = await session.execute(stmt)
+    return result.scalar_one_or_none()

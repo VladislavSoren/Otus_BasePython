@@ -22,15 +22,6 @@ class UserIn(UserBase):
 
 class UserOut(UserBase):
     id: int = Field(..., example=1234)  # добавляем ещё один атрибут "id"
-    # token: str  # зарывание секретиков
 
-
-def generate_token():
-    token = str(uuid4())
-    print("New token:", token)
-    return token
-
-
-class User(UserBase):
-    id: int
-    token: str = Field(default_factory=generate_token)
+    class Config:
+        orm_mode = True
