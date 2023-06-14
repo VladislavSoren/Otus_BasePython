@@ -11,7 +11,6 @@ import config
 
 
 class Base:
-
     @declared_attr
     def __tablename__(cls):
         return f"{config.DB_APP_PREFIX}{cls.__name__.lower()}s"

@@ -31,5 +31,3 @@ def get_user_by_id(session: Session, user_id: int) -> User | None:
 
 def get_user_by_token(session: Session, token: str) -> User | None:
     return session.query(User).filter(User.token == token).one_or_none()
-
-

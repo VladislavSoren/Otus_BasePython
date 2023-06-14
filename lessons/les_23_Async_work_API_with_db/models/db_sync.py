@@ -4,18 +4,23 @@ import config  # в проде
 from sqlalchemy import (
     create_engine,
     # update,
-    func, or_,
+    func,
+    or_,
 )
 
 from sqlalchemy.orm import (
     declarative_base,
     Session,
-    joinedload, selectinload, aliased,
+    joinedload,
+    selectinload,
+    aliased,
 )
 
 engine = create_engine(
     url=config.DB_URL,
     echo=config.DB_ECHO,
+    pool_size=config.DB_POOL_SIZE,
+    max_overflow=config.DB_MAX_OVERFLOW,
 )
 
 

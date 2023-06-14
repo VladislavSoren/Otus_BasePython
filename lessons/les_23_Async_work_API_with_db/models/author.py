@@ -5,7 +5,7 @@ from sqlalchemy import (  # black может делать переносы в а
     Integer,
     String,
     Text,
-    ForeignKey
+    ForeignKey,
 )
 from sqlalchemy.orm import (
     relationship,
@@ -43,7 +43,7 @@ class Author(CreatedAtMixin, Base):
 
     posts = relationship(
         "Post",
-        back_populates='author',
+        back_populates="author",
         uselist=True,  # 1 ко многим
     )
 

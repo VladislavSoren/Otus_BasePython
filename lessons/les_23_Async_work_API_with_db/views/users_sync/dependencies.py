@@ -12,11 +12,12 @@ from . import crud
 from models.db_sync import get_session
 from models import User
 
+
 # ... - значение обязательно
 # Функция get_user_by_auth_token завист от передачи в неё токена token
 def get_user_by_auth_token(
-        token: str = Header(..., alias="x-auth-token"),
-        session: Session = Depends(get_session),
+    token: str = Header(..., alias="x-auth-token"),
+    session: Session = Depends(get_session),
 ) -> User:
     user: User | None = crud.get_user_by_token(
         session=session,
@@ -26,7 +27,5 @@ def get_user_by_auth_token(
         return user
     else:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Auth token invalid!'
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Auth token invalid!"
         )
-

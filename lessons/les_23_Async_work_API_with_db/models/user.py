@@ -19,7 +19,6 @@ from .mixins import CreatedAtMixin
 
 def generate_token():
     token = str(uuid4())
-    print("New token:", token)
     return token
 
 

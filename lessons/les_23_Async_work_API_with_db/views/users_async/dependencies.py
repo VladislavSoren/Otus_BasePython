@@ -16,8 +16,8 @@ from models import User
 # ... - значение обязательно
 # Функция get_user_by_auth_token завист от передачи в неё токена token
 async def get_user_by_auth_token(
-        token: str = Header(..., alias="x-auth-token"),
-        session: AsyncSession = Depends(get_session),
+    token: str = Header(..., alias="x-auth-token"),
+    session: AsyncSession = Depends(get_session),
 ) -> User:
     user: User | None = await crud.get_user_by_token(
         session=session,
@@ -27,7 +27,5 @@ async def get_user_by_auth_token(
         return user
     else:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Auth token invalid!'
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Auth token invalid!"
         )
-

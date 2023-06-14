@@ -5,4 +5,5 @@
 
 from views.users_sync.views import get_user_by_id
 
-pass
+for i in range(200):
+    print(f"{i:03d}")

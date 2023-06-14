@@ -17,5 +17,3 @@ posts_tags_assoc_table = Table(
     Column("post_id", ForeignKey("blog_posts.id"), primary_key=True),
     Column("tag_id", ForeignKey("blog_tags.id"), primary_key=True),
 )
-
-
