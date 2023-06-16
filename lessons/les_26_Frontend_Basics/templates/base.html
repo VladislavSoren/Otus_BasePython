@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %}</title>
+    {% block head %}
+
+    {% endblock %}
+
+    <style>
+    html {
+      font-size: 26pt;
+    }
+
+    /* '.' - означает класс */
+    .space-top {
+        margin-top: 1em;
+    }
+
+    .no_underline {
+        text-decoration: none
+    }
+
+    </style>
+
+
+
+
+</head>
+
+<body>
+{% block body %}
+    Base body
+{% endblock %}
+
+<hr>
+&copy; VLADUS 2023
+</body>
+</html>
