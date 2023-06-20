@@ -10,6 +10,6 @@ Get random number:
 гибко изменяться (кроссплатформенность для различных экранов). Пример: 
 `<div style="margin-top: 1em">`
 - Часть логики можно вынести на frontend и логику прописать на JS
-
+- js at the end of thr file
 
 Cookie

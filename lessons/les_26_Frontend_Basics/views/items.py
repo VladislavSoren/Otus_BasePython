@@ -1,9 +1,9 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 items_app = Blueprint("items_app", __name__)
 
 
-@items_app.get("/")
+@items_app.get("/", endpoint="list")
 def items_list():
     return {
         "data": [
@@ -19,15 +19,13 @@ def items_list():
     }
 
 
-@items_app.get("/<int:item_id>/")
-def items_list_from_path(item_id: int):
+@items_app.get("/<int:item_id>/", endpoint="details")
+def item_details(item_id: int):
     return {
-        "data": [
-            {
-                "id": item_id,
-                "name": "abc",
-            },
-        ]
+        "data": {
+            "id": item_id,
+            "name": "single",
+        }
     }
 
 
@@ -36,3 +34,8 @@ def create_item():
     return {
 
     }
+
+
+@items_app.get("/next-item/", endpoint="next-item")
+def get_next_item_page():
+    return render_template("items/next-item.html")

@@ -11,7 +11,7 @@ app.config.update(
     SECRET_KEY="3a301b9d584aea914be3387f8a5f3ef7"
 )
 
-@app.get("/")
+@app.get("/", endpoint="index")
 def hello_root():
     return render_template("index.html")
 
