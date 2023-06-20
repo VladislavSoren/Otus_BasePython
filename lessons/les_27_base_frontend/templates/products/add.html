@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Create Product
+{% endblock %}
+
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+  <h3>Create a new product:</h3>
+  <div>
+
+    <form method="post">
+
+      <label form="prod-name-id" class="form-label">Product name:</label>
+      <div class="input-group mb-3">
+      <input
+              name="product-name"
+             type="text"
+             class="form-control"
+             placeholder="Desctop">
+
+
+      <span class="input-group-text" id="basic-addon2">@example.com</span>
+
+      </div>
+      <input class="btn btn-primary" type="submit" name="add-button" value="add">
+    </form>
+
+
+
+  </div>
+
+  <div class="mt-2">
+      <a href="{{ url_for('products_app.list') }}">
+      Back to product
+      </a>
+  </div>
+
+{% endblock %}
