@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+About page
+{% endblock %}
+
+{% block head %}
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/my_fonts_sizes.css') }}"
+    >
+{% endblock %}
+
+{% block body %}
+
+<div class="mx-sm-1 mx-md-2 mx-lg-3">
+
+<div class="my-3">
+        {% for paragraph in text_paragraphs %}
+            <p>
+            {{ paragraph }}
+            </p>
+        {% endfor %}
+</div>
+
+<h3> Ссылки на рабочие проекты: </h3>
+<div class="list-group">
+        {% for name, url in zip(names_projects_list, urls_projects_list) %}
+            <a
+            class="list-group-item list-group-item-primary btn-link my-1"
+            href="{{ url }}">
+            {{ name }}
+            </a>
+        {% endfor %}
+</div>
+
+</div>
+
+
+{% endblock %}
