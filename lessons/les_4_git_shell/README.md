@@ -25,7 +25,7 @@
 
 
 ```shell
-grep -n -B 2 -A 3 tail README.md
+grep -n -B 2 -A 3 tail alembic_setting.md
 ```
 
 ```shell
