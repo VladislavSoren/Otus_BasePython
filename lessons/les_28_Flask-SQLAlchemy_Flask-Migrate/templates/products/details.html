@@ -4,7 +4,12 @@
 Product №{{ product.id }} info
 {% endblock %}
 
+{% from "macros/show-flashed-mess.html" import show_flashed_mess_with_cat %}
+
 {% block body %}
+
+{{ show_flashed_mess_with_cat() }}
+
 <h3>Product is {{ product.name }}</h3>
 
 <div>

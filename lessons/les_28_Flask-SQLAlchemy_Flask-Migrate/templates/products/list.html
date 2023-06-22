@@ -4,19 +4,12 @@
 Products list
 {% endblock %}
 
+{% from "macros/show-flashed-mess.html" import show_flashed_mess_with_cat %}
+
 {% block body %}
 <h2>Hello Products list</h2>
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
+{{ show_flashed_mess_with_cat() }}
 
 <ul class="list-group my-1">
     {% if products %}

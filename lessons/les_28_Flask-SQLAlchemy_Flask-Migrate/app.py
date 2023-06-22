@@ -1,7 +1,10 @@
 from os import getenv
 
 from flask import Flask, request, render_template
+from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 
+from models import db
 from views.products import products_app
 from views.items import items_app
 
@@ -12,6 +15,13 @@ app.register_blueprint(products_app, url_prefix="/products")
 config_class_name = getenv("CONFIG_CLASS", "DevelopmentConfig")
 config_object = f'config.{config_class_name}'
 app.config.from_object(config_object)
+
+# Initialise db for our app
+db.init_app(app)
+migrate = Migrate(app=app, db=db)
+
+# Setting csrf protection
+csrf = CSRFProtect(app)
 
 @app.get("/", endpoint="index")
 def hello_root():

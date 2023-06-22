@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "mega-shop"
+version = "0.1.0"
+description = "Flask shop app"
+authors = ["Vladislav <vlad1998ss@mail.ru>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "mega_shop"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.3.2"
+flask-sqlalchemy = "^3.0.4"
+sqlalchemy = "<2"
+flask-migrate = "^4.0.4"
+flask-wtf = "^1.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

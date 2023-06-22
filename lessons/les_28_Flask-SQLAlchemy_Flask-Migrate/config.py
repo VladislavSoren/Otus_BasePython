@@ -1,8 +1,13 @@
 from os import getenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+
+DB_FILE = BASE_DIR / "app.db"
 
 SQLALCHEMY_DATABASE_URI = getenv(
     "SQLALCHEMY_DATABASE_URI",
-    ""
+    f"sqlite:///{DB_FILE}",
 )
 
 
