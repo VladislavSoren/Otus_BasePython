@@ -1,8 +1,6 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.10
+FROM python:3.10.6-bullseye
 
-#ENV LISTEN_PORT 5000
-#
-#EXPOSE 5000
+WORKDIR /app
 
 RUN pip install --upgrade pip "poetry==1.5.1"
 RUN poetry config virtualenvs.create false --local
@@ -11,4 +9,8 @@ COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --no-ansi --only main
 
-COPY . /app
+COPY . .
+
+RUN chmod +x ./prestart_dev.sh
+ENTRYPOINT ["./prestart_dev.sh"]
+CMD ["python", "app.py"]

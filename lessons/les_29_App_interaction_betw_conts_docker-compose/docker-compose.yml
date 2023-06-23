@@ -1,5 +1,5 @@
 # Use postgres/example user/password credentials
-version: "3"
+version: "3.9"
 
 services:
   app:
@@ -10,9 +10,23 @@ services:
       CONFIG_CLASS: ProductionConfig
       SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://username:passwd@pg:5432/blog
     ports:
-      - "5000:5000"
+      - "5000:80"
     depends_on:
-      - pg
+      pg:
+        condition: service_healthy
+
+  app-dev:
+    build:
+      dockerfile: ./Dockerfile-local
+      context: ./
+    environment:
+      CONFIG_CLASS: DevelopmentConfig
+      SQLALCHEMY_DATABASE_URI: postgresql://username:passwd@pg:5432/blog
+
+    volumes:
+      - ./:/app
+    ports:
+      - "5050:5000"
 
   pg:
     image: postgres
@@ -21,10 +35,15 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: passwd
       PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-      - "9999:5432"
+#    ports:
+#      - "9999:5432"
     volumes:
       - db-data:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
 volumes:
   db-data:
