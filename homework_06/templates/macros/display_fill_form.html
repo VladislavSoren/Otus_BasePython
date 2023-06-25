@@ -1,0 +1,10 @@
+{% macro display_fill_form(form) %}
+    {% for field  in form %}
+        {% if field.name != 'csrf_token' %}
+            <div class="my-2">
+            {{ field.label(class="form-label") }}
+            {{ field(size=20, class="form-control") }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

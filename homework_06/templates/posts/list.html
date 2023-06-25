@@ -1,33 +1,32 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Users list
+Posts list
 {% endblock %}
 
 {% from "macros/show-flashed-mess.html" import show_flashed_mess_with_cat %}
 
 {% block body %}
-<h2>Users list</h2>
+<h2>Posts:</h2>
 
 <ul class="list-group my-1">
     {% if products %}
-        <h3>Products:</h3>
         {% for product in products %}
             <a
             class="list-group-item btn-link"
-            href="{{ url_for('users_app.details', product_id=product.id) }}">
-            {{ product.name }}
+            href="{{ url_for('posts_app.details', product_id=product.id) }}">
+            {{ product.proj_name }}
             </a>
 
         {% endfor %}
     {% else %}
-        <h3>No users</h3>
+        <h3>No posts</h3>
     {% endif %}
 
-    <div class="space-top my-1">
-        <a class="no_underline"
-        href="{{ url_for('users_app.add') }}">Add new</a>
-    </div>
+<!--    <div class="space-top my-1">-->
+<!--        <a class="no_underline"-->
+<!--        href="{{ url_for('posts_app.add') }}">Add new</a>-->
+<!--    </div>-->
 
 </ul>
 {% endblock %}

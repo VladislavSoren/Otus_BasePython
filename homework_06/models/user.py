@@ -23,11 +23,16 @@ class User(db.Model, Base):
     profession_type = Column(String(50), nullable=True)
     website = Column(String(150), unique=True, nullable=True)
 
-    # posts = relationship(
-    #     "Post",
-    #     back_populates="user",
-    #     uselist=True,
-    # )
+    def __iter__(self):
+        for name_attr, value in self.__dict__.values().mapping.items():
+            yield name_attr, value
+
+    posts = db.relationship(
+        "PostProj",
+        backref="user",
+        uselist=True,  # one to many
+
+    )
 
     if TYPE_CHECKING:
         query: Query

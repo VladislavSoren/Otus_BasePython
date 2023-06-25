@@ -1,0 +1,9 @@
+{% macro display_model_details(form, private_names) %}
+    {% for name, value  in form %}
+        {% if name not in private_names %}
+            <div class="my-2">
+            <p class="new">{{ name }} : {{ value }} </p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

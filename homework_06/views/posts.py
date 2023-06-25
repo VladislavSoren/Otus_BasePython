@@ -6,57 +6,52 @@ from flask import (
     redirect,
     flash,
 )
-from sqlalchemy.orm import joinedload
 
-from models import db, User, PostProj
-from .forms.users import UserForm
+from models import db, PostProj 
+# from .forms.users import UserForm
 
-users_app = Blueprint("users_app", __name__)
+posts_app = Blueprint("posts_app", __name__)
 
 
-@users_app.get("/", endpoint="list")
+@posts_app.get("/", endpoint="list")
 def get_products_list():
-    products: list[User] = User.query.order_by(User.id).all()
-
-    # users_with_posts = (
-    #     User.query
-    #     .options(joinedload('posts', innerjoin=True))
-    #     .order_by("id")
-    #     .all()
-    # )
-    pass
+    products: list[PostProj] = PostProj.query.order_by(PostProj.id).all()
+    return render_template("posts/list.html", products=products)
 
 
-    return render_template("users/list.html", products=products)
-
-
-def get_product_by_id(product_id: int) -> User:
-    return User.query.get_or_404(
+def get_product_by_id(product_id: int) -> PostProj:
+    return PostProj.query.get_or_404(
         product_id,
-        description=f"User {product_id} not found"
+        description=f"PostProj {product_id} not found"
     )
 
 
-@users_app.get("/<int:product_id>/", endpoint="details")
+@posts_app.get("/<int:product_id>/", endpoint="details")
 def get_product_details(product_id: int):
     private_names = [
         '_sa_instance_state',
-        'email',
+        'user_id',
         'id',
     ]
 
     product = get_product_by_id(product_id=product_id)
-    return render_template("users/details.html", product=product, private_names=private_names)
+    return render_template("posts/details.html", product=product, private_names=private_names)
 
 
-@users_app.route("/add/", methods=["GET", "POST"], endpoint="add")
+# @posts_app.get("/<int:product_id>/", endpoint="details")
+# def get_all_posts_of_user(product_id: int):
+
+
+
+
+@posts_app.route("/add/", methods=["GET", "POST"], endpoint="add")
 def create_new_product():
     form = UserForm()
     if request.method == "GET":
-        return render_template("users/add.html", form=form)
+        return render_template("posts/add.html", form=form)
 
     if not form.validate_on_submit():  # если НЕ подтверждено при отправке
-        return render_template("users/add.html", form=form), 400
+        return render_template("posts/add.html", form=form), 400
 
     product = User(name=form.data['name'],
                    username=form.data['username'],
@@ -66,12 +61,12 @@ def create_new_product():
                    )
     db.session.add(product)
     db.session.commit()
-    url = url_for("users_app.details", product_id=product.id)
+    url = url_for("posts_app.details", product_id=product.id)
     flash(f"Created {User.__name__} {product.name!r}", category="success")
     return redirect(url)
 
 
-@users_app.route(
+@posts_app.route(
     "/<int:product_id>/confirm-delete/",
     methods=["GET", "POST"],
     endpoint="confirm-delete",
@@ -79,12 +74,12 @@ def create_new_product():
 def confirm_delete_product(product_id: int):
     product = get_product_by_id(product_id=product_id)
     if request.method == "GET":
-        return render_template("users/confirm-delete.html", product=product)
+        return render_template("posts/confirm-delete.html", product=product)
 
     product_name = product.name
     db.session.delete(product)
     db.session.commit()
     # Перенаправляемся на страницу с перечнем товара
     flash(f"Deleted {User.__name__} {product_name!r}", category="warning")
-    url = url_for("users_app.list")
+    url = url_for("posts_app.list")
     return redirect(url)

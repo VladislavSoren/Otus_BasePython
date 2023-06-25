@@ -4,6 +4,11 @@ Commands:
 docker compose up -d pg
 ```
 
+Коммитим миграху
+```shell
+flask db migrate -m "Initial migration."
+```
+
 Накатываем миграхи
 ```shell
 flask db upgrade
