@@ -2,7 +2,7 @@
     {% for name, value  in form %}
         {% if name not in private_names %}
             <div class="my-2">
-            <p class="new">{{ name }} : {{ value }} </p>
+            <p class="new"><strong>{{ name }}</strong>: {{ value }} </p>
             </div>
         {% endif %}
     {% endfor %}

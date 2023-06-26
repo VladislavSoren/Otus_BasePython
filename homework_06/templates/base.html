@@ -9,6 +9,10 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
     >
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/my_font_size.css') }}"
+    >
 
     {% block head %}
 
@@ -28,6 +32,7 @@
 
           {% for endpoint, label in [
             ('users_app.list', 'Users'),
+            ('posts_app.list', 'Posts'),
           ]%}
 
             <li class="nav-item">
@@ -44,7 +49,7 @@
 
 
 
-
+<!-- Вывод действий с юзером -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Users actions
@@ -56,6 +61,20 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li>
+
+<!-- Вывод действий с постом -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Posts actions
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('posts_app.add') }}">Add</a></li>
+              <li><a class="dropdown-item disabled" href="#">Coming soon</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+
         </ul>
       </div>
     </div>
@@ -69,8 +88,8 @@
 
 <hr>
 
-<div class="mt-1 mt-md-3">
-  &copy; VLADUS 2023
+<div class="mx-2 mt-1 mt-md-3">
+  &copy; VladislavSoren 2023
 </div>
 
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}">

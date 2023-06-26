@@ -9,7 +9,7 @@ from flask import (
 from sqlalchemy.orm import joinedload
 
 from models import db, User, PostProj
-from .forms.users import UserForm
+from .forms.user import UserForm
 
 users_app = Blueprint("users_app", __name__)
 
@@ -18,16 +18,12 @@ users_app = Blueprint("users_app", __name__)
 def get_products_list():
     products: list[User] = User.query.order_by(User.id).all()
 
-    # users_with_posts = (
-    #     User.query
-    #     .options(joinedload('posts', innerjoin=True))
-    #     .order_by("id")
-    #     .all()
-    # )
-    pass
-
-
-    return render_template("users/list.html", products=products)
+    return render_template(
+        "users/list.html",
+        products=products,
+        # class_name=products[0].__class__.__name__
+        class_name=User.__name__
+    )
 
 
 def get_product_by_id(product_id: int) -> User:
@@ -43,10 +39,27 @@ def get_product_details(product_id: int):
         '_sa_instance_state',
         'email',
         'id',
+        'posts',  # При вытягивании постов автоматом добавляется в атрибуты
     ]
 
-    product = get_product_by_id(product_id=product_id)
-    return render_template("users/details.html", product=product, private_names=private_names)
+    # user_with_posts: User = (
+    #     User.query
+    #     .options(joinedload('posts', innerjoin=True))
+    #     .order_by("id")
+    #     .filter(User.id == product_id)
+    #     .one_or_404()
+    # )
+
+    product: User = get_product_by_id(product_id=product_id)
+    posts_of_user: list[PostProj] = product.posts
+
+    return render_template(
+        "users/details.html",
+        class_name=User.__name__,
+        product=product,
+        private_names=private_names,
+        posts=posts_of_user,
+    )
 
 
 @users_app.route("/add/", methods=["GET", "POST"], endpoint="add")

@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Posts list
+{{ class_name }}s list
 {% endblock %}
 
 {% from "macros/show-flashed-mess.html" import show_flashed_mess_with_cat %}
 
 {% block body %}
-<h2>Posts:</h2>
+<!-- Отображаем flashed сообщения  -->
+{{ show_flashed_mess_with_cat() }}
+
+<h2>{{ class_name }}s:</h2>
 
 <ul class="list-group my-1">
     {% if products %}
@@ -20,13 +23,13 @@ Posts list
 
         {% endfor %}
     {% else %}
-        <h3>No posts</h3>
+        <h3>No {{ class_name }}s</h3>
     {% endif %}
 
-<!--    <div class="space-top my-1">-->
-<!--        <a class="no_underline"-->
-<!--        href="{{ url_for('posts_app.add') }}">Add new</a>-->
-<!--    </div>-->
+    <div class="space-top my-3">
+        <a class="btn btn-primary"
+        href="{{ url_for('posts_app.add') }}">Add new</a>
+    </div>
 
 </ul>
 {% endblock %}

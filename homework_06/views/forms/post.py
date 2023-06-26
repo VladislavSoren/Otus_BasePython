@@ -7,43 +7,55 @@ from wtforms import StringField
 from wtforms.validators import DataRequired, Length
 
 
-class UserForm(FlaskForm):
-    name = StringField(
-        label="Name:",
+class PostProjForm(FlaskForm):
+    user_id = StringField(
+        label="Your ID:",
+        validators=[
+            DataRequired(),
+            Length(min=1)
+        ],
+    )
+
+    title = StringField(
+        label="Name of post:",
         validators=[
             DataRequired(),
             Length(min=3)
         ],
     )
 
-    username = StringField(
-        label="Username:",
+    body = StringField(
+        label="Brief introduction:",
         validators=[
             DataRequired(),
             Length(min=5)
         ],
     )
 
-    email = StringField(
-        label="Email:",
+    proj_name = StringField(
+        label="Project name:",
         validators=[
             DataRequired(),
             Length(min=5)
         ],
     )
 
-    profession_type = StringField(
-        label="Profession:",
+    description = StringField(
+        label="Description:",
         validators=[
             DataRequired(),
             Length(min=5)
         ],
     )
 
-    website = StringField(
-        label="Website:",
+    url = StringField(
+        label="Project URL:",
         validators=[
             DataRequired(),
             Length(min=5)
         ],
+    )
+
+    other_contributors = StringField(
+        label="Names other contributors:",
     )

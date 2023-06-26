@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-User №{{ product.id }} info
+{{ class_name }} №{{ product.id }} info
 {% endblock %}
 
 {% from "macros/show-flashed-mess.html" import show_flashed_mess_with_cat %}
@@ -11,20 +11,43 @@ User №{{ product.id }} info
 
 {{ show_flashed_mess_with_cat() }}
 
-<h3 class="my-3">User is {{ product.name }}</h3>
+<h3 class="my-3">{{ class_name }} is {{ product.name }}</h3>
 
 {{ display_model_details(product, private_names) }}
 
-<div>
-    <a href="{{ url_for('users_app.confirm-delete', product_id=product.id) }}">
-    Delete user
-    </a>
-</div>
 
-<div class="space-top">
-    <a class="no_underline" href="{{ url_for('users_app.list') }}">
-    Back to list
-    </a>
+
+<!-- Отображаем посты юзера  -->
+<a class="btn btn-secondary dropdown-toggle btn-lg my-2 me-3"
+   href="#"
+   role="button"
+   data-bs-toggle="dropdown"
+   aria-expanded="false">
+  Posts
+</a>
+<ul class="dropdown-menu">
+    {% for post  in posts %}
+        <li><a class="dropdown-item"
+               href="{{ url_for('posts_app.details', product_id=post.id) }}">
+            {{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+
+<br>
+
+<!-- Кнопки перехода на другие страницы  -->
+<div class="btn-group">
+    <div>
+        <a class="btn btn-danger my-2  me-3" href="{{ url_for('users_app.confirm-delete', product_id=product.id) }}">
+        Delete {{ class_name }}
+        </a>
+    </div>
+
+    <div class="my-2">
+        <a class="btn btn-outline-primary"  href="{{ url_for('users_app.list') }}">
+        To {{ class_name }}s list
+        </a>
+    </div>
 </div>
 
 {% endblock %}

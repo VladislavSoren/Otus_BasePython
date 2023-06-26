@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Confirm delete product {{ product.name }}
+Confirm delete product {{ product.title }}
 {% endblock %}
 
 {% block head %}
@@ -12,12 +12,12 @@ Confirm delete product {{ product.name }}
 {% endblock %}
 
 {% block body %}
-<h3>Are you sure you want to delete {{ product.name }}</h3>
+<h3>Are you sure you want to delete <strong>{{ product.title }}</strong></h3>
 <h3>This cannot be undone!</h3>
 
 <div>
     <a href="{{ url_for('posts_app.details', product_id=product.id) }}">
-    Back to Users
+    Back to {{ product.title }}
     </a>
 </div>
 <br>

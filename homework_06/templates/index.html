@@ -5,14 +5,6 @@
 {% endblock %}
 
 {% block head %}
-  <style>
-    /* CSS - cascade style sheets */
-    /*
-    html {
-      font-size: 22pt;
-    }
-     */
-  </style>
 {% endblock %}
 
 {% block body %}
@@ -24,6 +16,9 @@
   <ul>
     <li>
       <a href="{{ url_for('users_app.list') }}">Users</a>
+    </li>
+    <li>
+      <a href="{{ url_for('posts_app.list') }}">Posts</a>
     </li>
   </ul>
 {% endblock %}

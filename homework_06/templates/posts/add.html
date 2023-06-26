@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Create user
+  Create post
 {% endblock %}
 
 <!--  Импорты необходимых макросов      -->
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block body %}
-<h3>Create a new user:</h3>
+<h3>Create a new post:</h3>
 <div>
   <form method="post">
 
@@ -40,8 +40,8 @@
 
 <!--  Ссылка для перехода к списку юзеров      -->
 <div class="mt-2">
-    <a href="{{ url_for('users_app.list') }}">
-    Back to users
+    <a href="{{ url_for('posts_app.list') }}">
+    Back to posts
     </a>
 </div>
 
