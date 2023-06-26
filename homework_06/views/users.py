@@ -37,8 +37,8 @@ def get_product_by_id(product_id: int) -> User:
 def get_product_details(product_id: int):
     private_names = [
         '_sa_instance_state',
-        'email',
-        'id',
+        # 'email',
+        # 'id',  # На проде id НЕ будут доступны
         'posts',  # При вытягивании постов автоматом добавляется в атрибуты
     ]
 
@@ -50,6 +50,7 @@ def get_product_details(product_id: int):
     #     .one_or_404()
     # )
 
+    # Способ ниже даёт тот результат, но гораздо короче в записи
     product: User = get_product_by_id(product_id=product_id)
     posts_of_user: list[PostProj] = product.posts
 
