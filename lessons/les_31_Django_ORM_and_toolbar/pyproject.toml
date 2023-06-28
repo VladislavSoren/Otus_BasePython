@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "les-30"
+version = "0.1.0"
+description = ""
+authors = ["Vladislav <vlad1998ss@mail.ru>"]
+readme = "README.md"
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.2.2"
+
+
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
