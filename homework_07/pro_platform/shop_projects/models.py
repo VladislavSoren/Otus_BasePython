@@ -13,6 +13,15 @@ class Category(models.Model):
         return self.name
 
 
+# from shop_projects_app.models import Category
+class Creator(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return f"Author {self.user}"
+
+
 class Project(models.Model):
     class Status(models.IntegerChoices):
         ARCHIVED = 0
@@ -31,6 +40,7 @@ class Project(models.Model):
     )
 
     # new fields
+    creator = models.ForeignKey(Creator, on_delete=models.PROTECT, null=True)
     url = models.CharField(max_length=150, null=True)
     other_contributors = models.TextField(null=True)
 
@@ -39,14 +49,3 @@ class Project(models.Model):
 
     def __str__(self):
         return f"Product <№{self.id}, {self.name!r}>"
-
-
-# from shop_projects_app.models import Category
-class Creator(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.IntegerField()
-
-    projects = models.ForeignKey(Project, on_delete=models.PROTECT, null=True)
-
-    def __str__(self):
-        return f"Author {self.user}>"

@@ -2,8 +2,14 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
-from .models import Project, Category
-Q
+from .models import (
+    Project,
+    Category,
+    Creator,
+)
+
+
+
 
 def shop_index(request: HttpRequest) -> HttpResponse:
     '''
@@ -19,7 +25,7 @@ def shop_index(request: HttpRequest) -> HttpResponse:
         .defer(
             "created_at",
             "updated_at",
-            "category__description") # __ == .
+            "category__description")  # __ == .
         .all()
     )
 
@@ -34,14 +40,25 @@ def shop_index(request: HttpRequest) -> HttpResponse:
 
 def categories_with_products_tree(request: HttpRequest) -> HttpResponse:
     # Пока к categories не обратились, запросов в БД НЕ будет
-    categories = Category.objects.order_by("id").prefetch_related('projects').all() #
-
-
+    categories = Category.objects.order_by("id").prefetch_related('projects').all()  #
 
     return render(
         request=request,
         template_name="shop_projects/categories-with-projects-tree.html",
         context={
             "categories": categories,
+        }
+    )
+
+
+def creators_with_products_tree(request: HttpRequest) -> HttpResponse:
+    # Пока к categories не обратились, запросов в БД НЕ будет
+    creators = Creator.objects.order_by("id").prefetch_related('projects').all()  #
+
+    return render(
+        request=request,
+        template_name="shop_projects/creators-with-projects.html",
+        context={
+            "creators": creators,
         }
     )

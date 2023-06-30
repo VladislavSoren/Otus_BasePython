@@ -6,15 +6,15 @@
 
 {% block body %}
 
-  <h1>Categories</h1>
+  <h1>Creators</h1>
   <ul>
-    {% for category in categories %}
+    {% for creator in creators %}
       <li>
-        {{ category.name }}
+        {{ creator.user }}
         <ul>
-          {% for project in category.projects.all %}
+          {% for project in creator.projects.all %}
             <li>
-              {{ project.name }}
+              {{ project }}
             </li>
           {% endfor %}
         </ul>

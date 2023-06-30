@@ -19,4 +19,16 @@
       {% endfor %}
     </ul>
   </div>
+
+  <div>
+    <p>Links:</p>
+    <ul>
+      <li>
+        <a href="{% url 'shop_projects:categories_with_products_tree' %}">Categories with projects</a>
+      </li>
+      <li>
+        <a href="{% url 'shop_projects:creators_with_products' %}">Creators with projects</a>
+      </li>
+    </ul>
+  </div>
 {% endblock %}
