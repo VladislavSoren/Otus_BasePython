@@ -6,6 +6,7 @@ from .models import (
     Project,
     Category,
     Creator,
+    Donat,
 )
 
 
@@ -40,7 +41,7 @@ def shop_index(request: HttpRequest) -> HttpResponse:
 
 def categories_with_products_tree(request: HttpRequest) -> HttpResponse:
     # Пока к categories не обратились, запросов в БД НЕ будет
-    categories = Category.objects.order_by("id").prefetch_related('projects').all()  #
+    categories = Category.objects.order_by("id").prefetch_related('projects_for_cats').all()  #
 
     return render(
         request=request,
@@ -53,12 +54,50 @@ def categories_with_products_tree(request: HttpRequest) -> HttpResponse:
 
 def creators_with_products_tree(request: HttpRequest) -> HttpResponse:
     # Пока к categories не обратились, запросов в БД НЕ будет
-    creators = Creator.objects.order_by("id").prefetch_related('projects').all()  #
+    creators = Creator.objects.order_by("id").prefetch_related('projects_for_creators').all()  #
 
     return render(
         request=request,
         template_name="shop_projects/creators-with-projects.html",
         context={
             "creators": creators,
+        }
+    )
+
+
+def donats_view(request: HttpRequest) -> HttpResponse:
+    donats = (
+        Donat
+        .objects
+        .order_by("id")
+        .select_related("user")
+        .prefetch_related("projects")
+        .all()
+    )
+
+    return render(
+        request=request,
+        template_name="shop_projects/donats.html",
+        context={
+            "donats": donats,
+        }
+    )
+
+
+def projects_with_donats(request: HttpRequest) -> HttpResponse:
+    projects = (
+        Project
+        .objects
+        .order_by("id")
+        .select_related("creator")
+        .prefetch_related("donats")
+        .all()
+    )
+
+    return render(
+        request=request,
+        template_name="shop_projects/projects_with_donats.html",
+        context={
+            "projects": projects,
         }
     )

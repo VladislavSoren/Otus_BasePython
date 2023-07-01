@@ -33,19 +33,38 @@ class Project(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.PROTECT,
-        related_name="projects",
+        related_name="projects_for_cats",  # Important  arg!
     )  # Если удалим Category, то Project не дропнится
     status = models.IntegerField(
         choices=Status.choices
     )
 
     # new fields
-    creator = models.ForeignKey(Creator, on_delete=models.PROTECT, null=True)
+    creator = models.ForeignKey(
+        Creator,
+        on_delete=models.PROTECT,
+        null=True,
+        related_name="projects_for_creators"
+    )
     url = models.CharField(max_length=150, null=True)
     other_contributors = models.TextField(null=True)
 
+    # Time fields
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Product <№{self.id}, {self.name!r}>"
+
+
+class Donat(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
+    projects = models.ManyToManyField(
+        Project,
+        related_name="donats",
+    )
+    money = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)

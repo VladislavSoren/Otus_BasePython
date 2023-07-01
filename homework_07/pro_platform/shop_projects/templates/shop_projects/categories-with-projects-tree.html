@@ -12,7 +12,7 @@
       <li>
         {{ category.name }}
         <ul>
-          {% for project in category.projects.all %}
+          {% for project in category.projects_for_cats.all %}
             <li>
               {{ project.name }}
             </li>
@@ -22,13 +22,6 @@
     {% endfor %}
   </ul>
 
-  <div>
-    <p>Links:</p>
-    <ul>
-      <li>
-        <a href="{% url 'shop_projects:index' %}">Back to projects</a>
-      </li>
-    </ul>
-  </div>
+{% include 'macros/back_to_index.html' %}
 
 {% endblock %}
