@@ -10,8 +10,6 @@ from .models import (
 )
 
 
-
-
 def shop_index(request: HttpRequest) -> HttpResponse:
     '''
     select_related - к одному (как joinedload в алхимии )
