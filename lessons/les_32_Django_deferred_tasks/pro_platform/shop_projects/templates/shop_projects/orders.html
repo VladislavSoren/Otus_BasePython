@@ -12,7 +12,7 @@
       <li>
         <p>
         #{{ order.id }}
-        <code>{{ order.promocode }}</code></p>
+        <code>(promocode: {{ order.promocode }})</code></p>
         <p><strong>Address:</strong> {{ order.address }}</p>
         <p><strong>Ordered at:</strong> {{ order.created_at }}</p>
         <ul>
@@ -20,6 +20,8 @@
             <li>#{{ project.pk }} {{ project.name }}</li>
           {% endfor %}
         </ul>
+        <p><strong>Ordered by</strong> {{ order.user }}</p>
+        <p><strong>Card</strong> {{ order.payment_details.card_ends_with }}</p>
      </li>
     {% endfor %}
   </ul>

@@ -41,12 +41,16 @@ def projects_view(request: HttpRequest) -> HttpResponse:
 
 
 def orders_view(request: HttpRequest) -> HttpResponse:
+    # нагибаем N+N+1! с помощью select_related и prefetch_related
     orders = (
         Order
         .objects
         .order_by("id")
-        .select_related("user") #, "payment_details")
+        # to one
+        .select_related("user", "payment_details")
+        # to many
         .prefetch_related("projects")
+        # all objects
         .all()
     )
 
@@ -70,3 +74,5 @@ def categories_with_products_tree(request: HttpRequest) -> HttpResponse:
             "categories": categories,
         }
     )
+
+
