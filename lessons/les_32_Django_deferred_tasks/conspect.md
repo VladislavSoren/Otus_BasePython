@@ -41,18 +41,20 @@ https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html
 Notes:
 - AMQP (Advanced Message Queuing Protocol) — открытый протокол прикладного уровня 
 для передачи сообщений между компонентами системы.
+- Нужно отдельно обновить `celery -A pro_platform  worker -l INFO`, чтобы
+применились изменения!!!!!!! в коде для брокера
 
+Для запуска проекта:
+- `docker compose up -d`
+- `docker compose -f docker-compose_rabbit.yml up -d rabbitmq`
+- `python manage.py migrate`
+- `python manage.py runserver`
+- `celery -A pro_platform worker -l INFO`
+
+*** Отложенные задачи сохраняются в rabbit и от туда берутся и 
+выполняются воркером. При этом пользователь НЕ блокируется!***
 
 Commands:
-Adding package to dev group
-```shell
-poetry add django-debug-toolbar --group dev
-```
-
-Do not update locked versions, only refresh lock file (if new packages will be added)
-```shell
-poetry lock --no-update
-```
 
 Install main dependencies and delete others
 ```shell
@@ -64,17 +66,4 @@ Create auto empty migration
 python manage.py makemigrations shop_projects --empty
 ```
 
-To know ur IP
-```shell
-ip a
-```
-
-link to shell under django
-```shell
-python manage.py shell
-```
-
-link to shell under debug django (in DebugToolbar set)
-```shell
-python manage.py debugsqlshell
 ```
