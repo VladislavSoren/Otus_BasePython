@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 from shop_projects.tasks import notify_order_saved
 
@@ -12,6 +13,10 @@ class Category(models.Model):
 
     name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=200)
+    archived = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse("shop_projects:category", kwargs={"pk": self.object.pk})
 
     def __str__(self):
         return self.name

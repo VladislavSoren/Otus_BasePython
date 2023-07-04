@@ -6,8 +6,10 @@ Summary:
 - `extra_context` is useful attr of `ContextMixin` class
 - success_url (redirection when request is success)
 - reverse/reverse_lazy = immediately/on call
-Notes:
+- form_valid
 
+Notes:
+- CRUD
 
 Commands:
 

@@ -1,7 +1,7 @@
 from celery.result import AsyncResult
 from django.db.models import Q
-from django.http import HttpResponse, HttpRequest, JsonResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import (
@@ -9,6 +9,8 @@ from django.views.generic import (
     ListView,
     CreateView,
     DetailView,
+    UpdateView,
+    DeleteView,
 )
 
 from shop_projects.tasks import notify_order_saved
@@ -21,7 +23,13 @@ from .models import (
 
 
 class CategoryListView(ListView):
-    model = Category
+    # model = Category
+    queryset = (
+        Category
+        .objects
+        .filter(~Q(archived=True))
+        .all()
+    )
 
 
 class CategoryDetailView(DetailView):
@@ -34,6 +42,41 @@ class CategoryCreateView(CreateView):
     # fields = "name", "description",
     # success_url = reverse  #
     success_url = reverse_lazy("shop_projects:categories")
+
+
+class CategoryUpdateView(UpdateView):
+    template_name_suffix = "_update_form"
+    model = Category
+    form_class = CategoryForm
+
+    # fields = "description",
+    # success_url = reverse_lazy("shop_projects:category", {})
+
+    def get_success_url(self):
+        return reverse(
+            "shop_projects:category",
+            kwargs={
+                "pk": self.object.pk,
+            }
+        )
+
+
+class CategoryDeleteView(DeleteView):
+    # model = Category
+    success_url = reverse_lazy("shop_projects:categories")
+    queryset = (
+        Category
+        .objects
+        .filter(~Q(archived=True))
+        .all()
+    )
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.archived = True
+        self.object.save()
+        # return HttpResponseRedirect(success_url)
+        return redirect(success_url)
 
 
 class ShopIndexView(TemplateView):

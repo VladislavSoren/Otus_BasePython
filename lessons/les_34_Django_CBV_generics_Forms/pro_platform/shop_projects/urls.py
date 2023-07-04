@@ -9,6 +9,8 @@ from .views import (
     CategoryListView,
     CategoryCreateView,
     CategoryDetailView,
+    CategoryUpdateView,
+    CategoryDeleteView,
 )
 
 app_name = "shop_projects"
@@ -21,7 +23,12 @@ urlpatterns = [
 
     path("categories/", CategoryListView.as_view(), name="categories"),
     path("categories/create/", CategoryCreateView.as_view(), name="create-category"),
+
+
+    path("categories/<int:pk>/update/", CategoryUpdateView.as_view(), name="update-category"),
+    path("categories/<int:pk>/confirm-delete/", CategoryDeleteView.as_view(), name="confirm-delete-category"),
     path("categories/<int:pk>/", CategoryDetailView.as_view(), name="category"),
+
 
 
     path('cats_with_projs/', CategoriesWithProductsTree.as_view(), name="categories_with_products_tree"),

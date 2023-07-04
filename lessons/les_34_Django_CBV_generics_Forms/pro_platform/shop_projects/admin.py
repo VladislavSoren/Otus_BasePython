@@ -16,7 +16,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = "id", "name", "description"
+    list_display = "id", "name", "description", "archived",
     list_display_links = "id", 'name'
 
 

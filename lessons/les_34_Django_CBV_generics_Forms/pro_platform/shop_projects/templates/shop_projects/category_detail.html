@@ -12,6 +12,12 @@
 
 
   <div>
-    <a href="{% url 'shop_projects:categories' %}">To all categories</a>
+      <a class="btn btn-success" href="{% url 'shop_projects:update-category' pk=category.pk %}">Update</a>
+      <a class="btn btn-warning" href="{% url 'shop_projects:confirm-delete-category' pk=category.pk %}">Archive</a>
+    <ul>
+        <li>
+            <a href="{% url 'shop_projects:categories' %}">To all categories</a>
+        </li>
+    </ul>
   </div>
 {% endblock %}
