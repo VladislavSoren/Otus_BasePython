@@ -5,3 +5,5 @@
 - `python manage.py migrate`
 - `python manage.py runserver`
 - `celery -A pro_platform worker -l INFO`
+
+![img.png](img.png)

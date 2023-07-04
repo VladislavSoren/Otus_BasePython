@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Category #{{ category.pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>Category {{ category.pk }} detail:</h1>
+    <h2><code>{{ category.name }}</code></h2>
+    <h3>Description:</h3>
+    <p>{{ category.description }}</p>
+
+
+  <div>
+    <a href="{% url 'shop_projects:categories' %}">To all categories</a>
+  </div>
+{% endblock %}
