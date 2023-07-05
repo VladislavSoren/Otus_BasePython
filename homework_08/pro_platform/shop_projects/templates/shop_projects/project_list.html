@@ -15,6 +15,12 @@
             {% endfor %}
         </ul>
     </div>
+
+
+    <a class="btn btn-primary my-2"
+       href="{% url 'shop_projects:create-project' %}">
+       Create new {{ class_name }}</a>
+
     <div>
         {% include 'macros/back_to_index.html' %}
     </div>

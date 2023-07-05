@@ -48,6 +48,7 @@ class Project(models.Model):
     )
     url = models.CharField(max_length=150, null=True)
     other_contributors = models.TextField(null=True)
+    # archived = models.BooleanField(default=False)
 
     # Time fields
     created_at = models.DateTimeField(auto_now_add=True)

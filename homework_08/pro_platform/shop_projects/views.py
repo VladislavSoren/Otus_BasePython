@@ -1,9 +1,11 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from .forms import ProjectForm
 from .models import (
     Project,
     Category,
@@ -25,7 +27,7 @@ class ProjectsListView(ListView):
     queryset = (
         Project
         .objects
-        .filter(~Q(status=Project.Status.ARCHIVED))
+        .filter(status=Project.Status.AVAILABLE)
         .order_by("id")
         .select_related("category")
         .defer(
@@ -39,31 +41,13 @@ class ProjectsListView(ListView):
 
     extra_context = {
         "categories": queryset,
-        "class_name": Project._meta.object_name,
+        "class_name": Project._meta.object_name.lower(),
         "class_name_plural": Project._meta.verbose_name_plural,
     }
 
 
 class ProjectDetailView(DetailView):
-
     queryset = (
-        Project
-        .objects
-        .order_by("id")
-        .select_related("creator")
-        .prefetch_related("donats")
-        .all()
-    )
-
-    extra_context = {
-        "categories": queryset,
-        "class_name": Project._meta.object_name,
-        "class_name_plural": Project._meta.verbose_name_plural,
-    }
-
-
-def projects_with_donats(request: HttpRequest) -> HttpResponse:
-    projects = (
         Project
         .objects
         .order_by("id")
@@ -72,14 +56,59 @@ def projects_with_donats(request: HttpRequest) -> HttpResponse:
         .all()
     )
 
-    return render(
-        request=request,
-        template_name="shop_projects/projects_with_donats.html",
-        context={
-            "projects": projects,
-        }
+    extra_context = {
+        "categories": queryset,
+        "class_name": Project._meta.object_name.lower(),
+        "class_name_plural": Project._meta.verbose_name_plural,
+        "back_url_to_all_objs": 'shop_projects:projects',
+    }
+
+
+class ProjectCreateView(CreateView):
+    model = Project
+    form_class = ProjectForm
+    success_url = reverse_lazy("shop_projects:projects")
+
+    extra_context = {
+        "class_name": Project._meta.object_name.lower(),
+        "class_name_plural": Project._meta.verbose_name_plural,
+    }
+
+
+class ProjectUpdateView(UpdateView):
+    template_name_suffix = "_update_form"
+    model = Project
+    form_class = ProjectForm
+
+    extra_context = {
+        "class_name": Project._meta.object_name.lower(),
+        "class_name_plural": Project._meta.verbose_name_plural,
+    }
+
+    def get_success_url(self):
+        return reverse(
+            "shop_projects:project-details",
+            kwargs={
+                "pk": self.object.pk,
+            }
+        )
+
+
+class ProjectDeleteView(DeleteView):
+    success_url = reverse_lazy("shop_projects:projects")
+    queryset = (
+        Project
+        .objects
+        .filter(status=Project.Status.AVAILABLE)
+        .all()
     )
 
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.status = Project.Status.ARCHIVED # .value
+        self.object.save()
+        # return HttpResponseRedirect(success_url)
+        return redirect(success_url)
 
 
 def categories_with_products_tree(request: HttpRequest) -> HttpResponse:
@@ -125,6 +154,3 @@ def donats_view(request: HttpRequest) -> HttpResponse:
             "donats": donats,
         }
     )
-
-
-

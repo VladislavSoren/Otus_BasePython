@@ -10,7 +10,7 @@ from .models import (
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = "id", "name", "price", "category", "url", "creator"
+    list_display = "id", "name", "price", "category", "url", "creator", "status",
     list_display_links = "id", 'name',
 
 
