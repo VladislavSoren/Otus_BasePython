@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ class_name_plural }} #{{ object.pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>Category {{ object.pk }} detail:</h1>
+    <h2><code>{{ object.name }}</code></h2>
+    Price: <i>${{ object.price }}</i>
+    <h3>Description:</h3>
+    <p>{{ object.description }}</p>
+
+    <ul>
+      {% for donat in object.donats.all %}
+        <li>{{ donat.user }} - ${{ donat.money }}</li>
+      {% endfor %}
+    </ul>
+
+  <div>
+
+    <a class="btn btn-secondary" href="{% url 'shop_projects:projects' %}">
+        To all {{ class_name_plural }}</a>
+
+  </div>
+{% endblock %}
+
+<!--        <li>{{ donat.user }} - ${{ donat.money }}</li>-->

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Shop Index
+{% endblock %}
+
+{% block body %}
+  <div>
+    <h1>Shop index</h1>
+  </div>
+
+  <div>
+    <p>Links:</p>
+    <ul>
+      <li>
+        <a href="{% url 'shop_projects:projects' %}">Projects</a>
+      </li>
+      <li>
+        <a href="{% url 'shop_projects:categories_with_products_tree' %}">Categories with projects</a>
+      </li>
+      <li>
+        <a href="{% url 'shop_projects:creators_with_products' %}">Creators with projects</a>
+      </li>
+      <li>
+        <a href="{% url 'shop_projects:donats' %}">Donats</a>
+      </li>
+      <li>
+        <a href="{% url 'shop_projects:projects_with_donats' %}">Projects with donats</a>
+      </li>
+    </ul>
+  </div>
+{% endblock %}
+
+
