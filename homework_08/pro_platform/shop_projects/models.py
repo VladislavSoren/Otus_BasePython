@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class BaseModel(models.Model):  # base class should subclass 'django.db.models.Model'
@@ -67,6 +69,63 @@ class Project(BaseModel):
 
     def __str__(self):
         return f"Product <№{self.id}, {self.name!r}>"
+
+
+class Order(BaseModel):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
+    projects = models.ManyToManyField(
+        Project,
+        related_name="orders",
+    )
+    promocode = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+
+
+class OrderPaymentDetails(models.Model):
+    class Meta:
+        verbose_name_plural = "Order Payment Details"
+
+    class Status(models.IntegerChoices):
+        PENDING = 0
+        CONFIRMED = 1
+
+    order = models.OneToOneField(
+        Order,
+        on_delete=models.CASCADE,
+        related_name="payment_details",
+    )
+    payed_at = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    card_ends_with = models.CharField(max_length=5, blank=True)
+    status = models.IntegerField(
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+
+
+# def on_order_create_add_payment_details
+# @receiver(post_save, sender=Order)
+# def on_order_save(instance: Order, created: bool, **kwargs):
+#
+#     notify_order_saved.delay(
+#         order_pk=instance.pk,
+#         promocode=instance.promocode,
+#     )
+#
+#     if not created:
+#         return
+#
+#     OrderPaymentDetails.objects.get_or_create(
+#         order=instance,
+#     )
 
 
 class Donat(BaseModel):
