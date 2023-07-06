@@ -2,7 +2,7 @@ from django import forms
 
 from .models import (
     Project,
-    Category, Creator,
+    Category, Creator, Donat,
 )
 
 
@@ -51,6 +51,19 @@ class CreatorForm(BaseForm):
         fields = (
             "user",
             "rating",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class DonatForm(BaseForm):
+    class Meta:
+        model = Donat
+        fields = (
+            "user",
+            "projects",
+            "money",
         )
 
     def __init__(self, *args, **kwargs):

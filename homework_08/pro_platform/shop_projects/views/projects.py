@@ -88,7 +88,6 @@ class ProjectDeleteView(DeleteView):
 
     def form_valid(self, form):
         success_url = self.get_success_url()
-        self.object.status = Project.Status.ARCHIVED # .value
+        self.object.status = Project.Status.ARCHIVED
         self.object.save()
-        # return HttpResponseRedirect(success_url)
         return redirect(success_url)

@@ -23,13 +23,13 @@ from .views.creators import (
     CreatorDeleteView,
 )
 
-# from .views.donats import (
-#     DonatsListView,
-#     DonatDetailView,
-#     DonatCreateView,
-#     DonatUpdateView,
-#     DonatDeleteView,
-# )
+from .views.donats import (
+    DonatsListView,
+    DonatDetailView,
+    DonatCreateView,
+    DonatUpdateView,
+    DonatDeleteView,
+)
 
 app_name = "shop_projects"
 
@@ -54,6 +54,11 @@ urlpatterns = [
     path("creators/<int:pk>/update/", CreatorUpdateView.as_view(), name="update-creator"),
     path("creators/<int:pk>/confirm-delete/", CreatorDeleteView.as_view(), name="confirm-delete-creator"),
 
+    path('donats', DonatsListView.as_view(), name="donats"),
+    path("donats/create/", DonatCreateView.as_view(), name="create-donat"),
+    path("donats/<int:pk>/", DonatDetailView.as_view(), name="donat-details"),
+    path("donats/<int:pk>/update/", DonatUpdateView.as_view(), name="update-donat"),
+    path("donats/<int:pk>/confirm-delete/", DonatDeleteView.as_view(), name="confirm-delete-donat"),
 
 
 

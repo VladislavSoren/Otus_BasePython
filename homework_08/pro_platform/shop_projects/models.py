@@ -70,6 +70,9 @@ class Project(BaseModel):
 
 
 class Donat(BaseModel):
+    class Meta:
+        verbose_name_plural = "donats"
+
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
