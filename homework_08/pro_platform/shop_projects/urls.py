@@ -18,9 +18,9 @@ from .views.categories import (
 from .views.creators import (
     CreatorsListView,
     CreatorDetailView,
-    # CreatorCreateView,
-    # CreatorUpdateView,
-    # CreatorDeleteView,
+    CreatorCreateView,
+    CreatorUpdateView,
+    CreatorDeleteView,
 )
 
 # from .views.donats import (
@@ -49,10 +49,10 @@ urlpatterns = [
     path("categories/<int:pk>/confirm-delete/", CategoryDeleteView.as_view(), name="confirm-delete-category"),
 
     path('creators', CreatorsListView.as_view(), name="creators"),
-    # path("creators/create/", CreatorCreateView.as_view(), name="create-creator"),
+    path("creators/create/", CreatorCreateView.as_view(), name="create-creator"),
     path("creators/<int:pk>/", CreatorDetailView.as_view(), name="creator-details"),
-    # path("creators/<int:pk>/update/", CreatorUpdateView.as_view(), name="update-creator"),
-    # path("creators/<int:pk>/confirm-delete/", CreatorDeleteView.as_view(), name="confirm-delete-creator"),
+    path("creators/<int:pk>/update/", CreatorUpdateView.as_view(), name="update-creator"),
+    path("creators/<int:pk>/confirm-delete/", CreatorDeleteView.as_view(), name="confirm-delete-creator"),
 
 
 

@@ -2,11 +2,20 @@ from django import forms
 
 from .models import (
     Project,
-    Category,
+    Category, Creator,
 )
 
 
-class ProjectForm(forms.ModelForm):
+class BaseForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            widget: forms.Widget = field.widget
+            widget.attrs["class"] = "form-control"
+
+
+class ProjectForm(BaseForm):
     class Meta:
         model = Project
         fields = (
@@ -23,12 +32,8 @@ class ProjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for name, field in self.fields.items():
-            widget: forms.Widget = field.widget
-            widget.attrs["class"] = "form-control"
 
-
-class CategoryForm(forms.ModelForm):
+class CategoryForm(BaseForm):
     class Meta:
         model = Category
         fields = (
@@ -39,6 +44,14 @@ class CategoryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for name, field in self.fields.items():
-            widget: forms.Widget = field.widget
-            widget.attrs["class"] = "form-control"
+
+class CreatorForm(BaseForm):
+    class Meta:
+        model = Creator
+        fields = (
+            "user",
+            "rating",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
