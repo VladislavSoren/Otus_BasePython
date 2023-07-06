@@ -1,26 +1,9 @@
-from django.db.models import Q
-from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import ProjectForm
-from .models import (
-    Project,
-    Category,
-    Creator,
-    Donat,
-)
-
-
-# @register.filter
-# def to_class_name(value):
-#     return value.__class__.__name__
-
-
-class ShopIndexView(TemplateView):
-    template_name = "shop_projects/index.html"
+from shop_projects.forms import ProjectForm
+from shop_projects.models import Project
 
 
 class ProjectsListView(ListView):
@@ -109,48 +92,3 @@ class ProjectDeleteView(DeleteView):
         self.object.save()
         # return HttpResponseRedirect(success_url)
         return redirect(success_url)
-
-
-def categories_with_products_tree(request: HttpRequest) -> HttpResponse:
-    # Пока к categories не обратились, запросов в БД НЕ будет
-    categories = Category.objects.order_by("id").prefetch_related('projects_for_cats').all()  #
-
-    return render(
-        request=request,
-        template_name="shop_projects/categories-with-projects-tree.html",
-        context={
-            "categories": categories,
-        }
-    )
-
-
-def creators_with_products_tree(request: HttpRequest) -> HttpResponse:
-    # Пока к categories не обратились, запросов в БД НЕ будет
-    creators = Creator.objects.order_by("id").prefetch_related('projects_for_creators').all()  #
-
-    return render(
-        request=request,
-        template_name="shop_projects/creators-with-projects.html",
-        context={
-            "creators": creators,
-        }
-    )
-
-
-def donats_view(request: HttpRequest) -> HttpResponse:
-    donats = (
-        Donat
-        .objects
-        .order_by("id")
-        .select_related("user")
-        .prefetch_related("projects")
-        .all()
-    )
-
-    return render(
-        request=request,
-        template_name="shop_projects/donats.html",
-        context={
-            "donats": donats,
-        }
-    )

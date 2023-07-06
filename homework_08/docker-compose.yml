@@ -6,19 +6,14 @@ services:
   pg:
     image: postgres
     environment:
-      POSTGRES_DB: pro_platform
-      POSTGRES_USER: soren
-      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "9999:5432"
+      - "${DB_PORT}:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data/pgdata
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready" ]
-#      interval: 5s
-#      timeout: 3s
-#      retries: 5
+      - db-data:/var/lib/postgresql/data/
 
 volumes:
   db-data:

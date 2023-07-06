@@ -2,9 +2,24 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Category(models.Model):
+class BaseModel(models.Model):  # base class should subclass 'django.db.models.Model'
+
+    class Status(models.IntegerChoices):
+        ARCHIVED = 0
+        AVAILABLE = 1
+
+    status = models.IntegerField(
+        choices=Status.choices,
+        default=Status.AVAILABLE
+    )
+
     class Meta:
-        verbose_name_plural = "Categories"
+        abstract = True  # Set this model as Abstract
+
+
+class Category(BaseModel):
+    class Meta:
+        verbose_name_plural = "categories"
 
     name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=200)
@@ -14,19 +29,18 @@ class Category(models.Model):
 
 
 # from shop_projects_app.models import Category
-class Creator(models.Model):
+class Creator(BaseModel):
+    class Meta:
+        verbose_name_plural = "creators"
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
 
     def __str__(self):
-        return f"Author {self.user}"
+        return f"Creator {self.user}"
 
 
-class Project(models.Model):
-    class Status(models.IntegerChoices):
-        ARCHIVED = 0
-        AVAILABLE = 1
-
+class Project(BaseModel):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
@@ -35,9 +49,6 @@ class Project(models.Model):
         on_delete=models.PROTECT,
         related_name="projects_for_cats",  # Important  arg!
     )  # Если удалим Category, то Project не дропнится
-    status = models.IntegerField(
-        choices=Status.choices
-    )
 
     # new fields
     creator = models.ForeignKey(
@@ -58,7 +69,7 @@ class Project(models.Model):
         return f"Product <№{self.id}, {self.name!r}>"
 
 
-class Donat(models.Model):
+class Donat(BaseModel):
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
