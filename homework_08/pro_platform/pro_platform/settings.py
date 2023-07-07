@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from config import RABBIT_USER, RABBIT_PASS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,7 +48,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "shop_projects.apps.ShopProjectsConfig",
+
+    "django_celery_results",
+    "mail_templated",
 ]
 
 if DEBUG:
@@ -142,3 +148,42 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+####################
+# mailing list setup
+####################
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# Production
+EMAIL_HOST = None
+EMAIL_PORT = None
+EMAIL_HOST_USER = None
+EMAIL_HOST_PASSWORD = None
+EMAIL_USE_TLS = None
+EMAIL_USE_SSL = None
+EMAIL_TIMEOUT = None
+
+if DEBUG:
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = False
+
+########
+# Celery
+########
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 15 * 60
+
+# backend
+CELERY_BROKER_URL = f"amqp://{RABBIT_USER}:{RABBIT_PASS}@localhost:5672"
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
+# ignore warning
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

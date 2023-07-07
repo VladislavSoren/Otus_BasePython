@@ -4,6 +4,8 @@ from .models import (
     Project,
     Category,
     Creator,
+    OrderPaymentDetails,
+    Order,
     Donat,
 )
 
@@ -24,6 +26,25 @@ class CategoryAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = "id", "rating", "user",
     list_display_links = "id",
+
+
+class PaymentDetailsInline(admin.TabularInline):
+    model = OrderPaymentDetails
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [
+        PaymentDetailsInline,
+    ]
+    list_display = "id", "user", "promocode", "created_at"
+    list_display_links = "id", "promocode"
+
+
+@admin.register(OrderPaymentDetails)
+class OrderPaymentDetailsAdmin(admin.ModelAdmin):
+    list_display = "id", "payed_at", "card_ends_with", "status", "order"
+    list_display_links = "id", "status"
 
 
 @admin.register(Donat)

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from .tasks import notify_order_saved
+
 
 class BaseModel(models.Model):  # base class should subclass 'django.db.models.Model'
 
@@ -112,20 +114,20 @@ class OrderPaymentDetails(models.Model):
 
 
 # def on_order_create_add_payment_details
-# @receiver(post_save, sender=Order)
-# def on_order_save(instance: Order, created: bool, **kwargs):
-#
-#     notify_order_saved.delay(
-#         order_pk=instance.pk,
-#         promocode=instance.promocode,
-#     )
-#
-#     if not created:
-#         return
-#
-#     OrderPaymentDetails.objects.get_or_create(
-#         order=instance,
-#     )
+@receiver(post_save, sender=Order)
+def on_order_save(instance: Order, created: bool, **kwargs):
+
+    notify_order_saved.delay(
+        order_pk=instance.pk,
+        promocode=instance.promocode,
+    )
+
+    if not created:
+        return
+
+    OrderPaymentDetails.objects.get_or_create(
+        order=instance,
+    )
 
 
 class Donat(BaseModel):
