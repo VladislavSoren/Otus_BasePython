@@ -6,7 +6,19 @@
 - Creator
 - Category
 - Project
+- Order
+- OrderPaymentDetails
 - Donat
+![img.png](img.png)
+
+
+## Signals:
+- `post_save` signal for `OrderPaymentDetails` instance creating,
+when Order is updated/created (save action)
+
+
+## SharedTasks:
+- send mail, when signal `post_save` from Order received 
 
 
 ## Project start commands

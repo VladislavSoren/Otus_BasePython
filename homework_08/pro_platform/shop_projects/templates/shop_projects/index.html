@@ -5,26 +5,23 @@
 {% endblock %}
 
 {% block body %}
-  <div>
-    <h1>Shop index</h1>
-  </div>
 
   <div>
-    <p>Links:</p>
-    <ul>
-      <li>
+    <p class="h3 my-3">Sections:</p>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-action">
         <a href="{% url 'shop_projects:projects' %}">Projects</a>
       </li>
-      <li>
+      <li class="list-group-item list-group-item-action">
         <a href="{% url 'shop_projects:categories' %}">Categories</a>
       </li>
-      <li>
+      <li class="list-group-item list-group-item-action">
         <a href="{% url 'shop_projects:creators' %}">Creators</a>
       </li>
-      <li>
+      <li class="list-group-item list-group-item-action">
         <a href="{% url 'shop_projects:donats' %}">Donats</a>
       </li>
-      <li>
+      <li class="list-group-item list-group-item-action">
         <a href="{% url 'shop_projects:orders' %}">Orders</a>
       </li>
     </ul>

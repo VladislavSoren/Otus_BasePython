@@ -125,7 +125,7 @@ def on_order_save(instance: Order, created: bool, **kwargs):
     if not created:
         return
 
-    # opd_obj =
+    # opd_obj = data from form
 
     OrderPaymentDetails.objects.get_or_create(
         order=instance,

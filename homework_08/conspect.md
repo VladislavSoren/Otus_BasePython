@@ -1,4 +1,4 @@
-Алгоритм создания сигнала:
+Algorithm for creating a signal:
 - Используем сигнал `post_save` (нужно учитывать: после сохранения изм-ий или создания)
 - Создаём функцию под декоратором `receiver`, отправителем ставим `Order`
 - Функция принимает параметры:
@@ -7,12 +7,8 @@
 - `if created: OrderPaymentDetails.objects.get_or_create(order=instance)`
 
 
-
 Алгоритм запуска CELERY (инструмент для выполнения отложенных задач): 
 https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html
-
-* Для конфигурации параметров по умолчанию используется: `CELERY_` prefix
-
 
 Algorithm of creating shared_task (mailing example):
 - `poetry add celery`
@@ -35,6 +31,10 @@ Algorithm of creating shared_task (mailing example):
   - in @shared_task function add `send_mail` from mail_templated
   - create email/order-updated.html template
 - initiate signal (add/update and `save` order)
+
+ToDoList:
+- Creating OrderPaymentDetails when it fill
+togather with Order (adminka)
 
 
 
