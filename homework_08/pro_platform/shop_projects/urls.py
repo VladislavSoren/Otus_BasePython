@@ -30,6 +30,15 @@ from .views.donats import (
     DonatUpdateView,
     DonatDeleteView,
 )
+from .views.orders import (
+    OrdersListView,
+    # OrderDetailView,
+    order_list_view,
+    order_detail_view,
+#     OrderCreateView,
+#     OrderUpdateView,
+#     OrderDeleteView,
+)
 
 app_name = "shop_projects"
 
@@ -60,7 +69,11 @@ urlpatterns = [
     path("donats/<int:pk>/update/", DonatUpdateView.as_view(), name="update-donat"),
     path("donats/<int:pk>/confirm-delete/", DonatDeleteView.as_view(), name="confirm-delete-donat"),
 
-
+    path('orders', order_list_view, name="orders"),
+    # path("orders/create/", OrderCreateView.as_view(), name="create-order"),
+    path("orders/<int:pk>/", order_detail_view, name="order-details"),
+    # path("orders/<int:pk>/update/", OrderUpdateView.as_view(), name="update-order"),
+    # path("orders/<int:pk>/confirm-delete/", OrderDeleteView.as_view(), name="confirm-delete-order"),
 
 
 ]

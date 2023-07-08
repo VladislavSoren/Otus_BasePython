@@ -1,24 +1,24 @@
-# Направление для Django проекта: `Профессиональная платформа`
-(`Планируется сделать на базе данной темы проектную работу`)
+# Django project name: `Professional platform`
 
-Создано приложение в рамках выбранного проекта `магазин проектов`
-## Модели:
+
+## App #1: `shop projects`
+## Models:
 - Creator
 - Category
 - Project
 - Donat
 
 
-## Алгоритм запуска проекта:
-- На уровне `docker-compose.yml` запускаем БД (postgres) командой `docker compose up`
-- На уровне `pro_platform` создаём коммиты миграций `python manage.py makemigrations`
-- Выполняем миграции `python manage.py migrate`
-- Запускаем проект ` python manage.py runserver`
-
-Для запуска проекта:
+## Project start commands
+Root level:
 - `docker compose up -d`
-- `docker compose -f docker-compose_rabbit.yml up -d rabbitmq`
-- `docker compose -f docker-compose_rabbit.yml up -d maildev`
+- `docker compose -f docker-compose_rabbit.yml up -d`
+
+Project level:
 - `python manage.py migrate`
 - `python manage.py runserver`
 - `celery -A pro_platform worker -l INFO`
+
+Alternative start:
+- bash start_project.sh
+- bash start_celery.sh

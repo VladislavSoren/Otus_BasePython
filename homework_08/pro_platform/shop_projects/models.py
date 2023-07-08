@@ -74,6 +74,9 @@ class Project(BaseModel):
 
 
 class Order(BaseModel):
+    class Meta:
+        verbose_name_plural = "orders"
+
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
@@ -85,8 +88,6 @@ class Order(BaseModel):
     promocode = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
 
 
 class OrderPaymentDetails(models.Model):
@@ -116,7 +117,6 @@ class OrderPaymentDetails(models.Model):
 # def on_order_create_add_payment_details
 @receiver(post_save, sender=Order)
 def on_order_save(instance: Order, created: bool, **kwargs):
-
     notify_order_saved.delay(
         order_pk=instance.pk,
         promocode=instance.promocode,
@@ -125,8 +125,11 @@ def on_order_save(instance: Order, created: bool, **kwargs):
     if not created:
         return
 
+    # opd_obj =
+
     OrderPaymentDetails.objects.get_or_create(
         order=instance,
+        # card_ends_with='*369'
     )
 
 
