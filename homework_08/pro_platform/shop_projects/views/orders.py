@@ -1,8 +1,10 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Sum
 
+from shop_projects.forms import OrderForm
 from shop_projects.models import Order
 
 
@@ -124,51 +126,52 @@ def order_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
             "class_name": Order._meta.object_name.lower(),
             "class_name_plural": Order._meta.verbose_name_plural,
             "back_url_to_all_objs": 'shop_projects:orders',
+            "pk": pk,
         }
     )
 
 
-# class ProjectCreateView(CreateView):
-#     model = Project
-#     form_class = ProjectForm
-#     success_url = reverse_lazy("shop_projects:projects")
-#
-#     extra_context = {
-#         "class_name": Project._meta.object_name.lower(),
-#         "class_name_plural": Project._meta.verbose_name_plural,
+class OrderCreateView(CreateView):
+    model = Order
+    form_class = OrderForm
+    success_url = reverse_lazy("shop_projects:orders")
+
+    extra_context = {
+        "class_name": Order._meta.object_name.lower(),
+        "class_name_plural": Order._meta.verbose_name_plural,
     }
-#
-#
-# class ProjectUpdateView(UpdateView):
-#     template_name_suffix = "_update_form"
-#     model = Project
-#     form_class = ProjectForm
-#
-#     extra_context = {
-#         "class_name": Project._meta.object_name.lower(),
-#         "class_name_plural": Project._meta.verbose_name_plural,
-#     }
-#
-#     def get_success_url(self):
-#         return reverse(
-#             "shop_projects:project-details",
-#             kwargs={
-#                 "pk": self.object.pk,
-#             }
-#         )
-#
-#
-# class ProjectDeleteView(DeleteView):
-#     success_url = reverse_lazy("shop_projects:projects")
-#     queryset = (
-#         Project
-#         .objects
-#         .filter(status=Project.Status.AVAILABLE)
-#         .all()
-#     )
-#
-#     def form_valid(self, form):
-#         success_url = self.get_success_url()
-#         self.object.status = Project.Status.ARCHIVED
-#         self.object.save()
-#         return redirect(success_url)
+
+
+class OrderUpdateView(UpdateView):
+    template_name_suffix = "_update_form"
+    model = Order
+    form_class = OrderForm
+
+    extra_context = {
+        "class_name": Order._meta.object_name.lower(),
+        "class_name_plural": Order._meta.verbose_name_plural,
+    }
+
+    def get_success_url(self):
+        return reverse(
+            "shop_projects:order-details",
+            kwargs={
+                "pk": self.object.pk,
+            }
+        )
+
+
+class OrderDeleteView(DeleteView):
+    success_url = reverse_lazy("shop_projects:orders")
+    queryset = (
+        Order
+        .objects
+        .filter(status=Order.Status.AVAILABLE)
+        .all()
+    )
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.status = Order.Status.ARCHIVED
+        self.object.save()
+        return redirect(success_url)

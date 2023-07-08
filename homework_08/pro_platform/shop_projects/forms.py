@@ -2,7 +2,7 @@ from django import forms
 
 from .models import (
     Project,
-    Category, Creator, Donat,
+    Category, Creator, Donat, Order,
 )
 
 
@@ -64,6 +64,19 @@ class DonatForm(BaseForm):
             "user",
             "projects",
             "money",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class OrderForm(BaseForm):
+    class Meta:
+        model = Order
+        fields = (
+            "user",
+            "projects",
+            "promocode",
         )
 
     def __init__(self, *args, **kwargs):

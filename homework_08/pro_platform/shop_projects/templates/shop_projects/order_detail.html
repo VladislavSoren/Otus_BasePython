@@ -27,6 +27,16 @@
 
       {% endfor %}
 
+    <div class="my-2">
+      <a class="btn btn-success"
+         href="{% url 'shop_projects:update-order' pk=pk %}">
+          Update</a>
+
+        <a class="btn btn-warning"
+           href="{% url 'shop_projects:confirm-delete-order' pk=pk %}">
+           Archive</a>
+        </div>
+
   <div>
     <a class="btn btn-secondary"
        href="{% url back_url_to_all_objs %}">
@@ -34,12 +44,4 @@
   </div>
 {% endblock %}
 
-<!--    <div class="my-2">-->
-<!--      <a class="btn btn-success"-->
-<!--         href="{% url 'shop_projects:update-project' pk=object.pk %}">-->
-<!--          Update</a>-->
 
-<!--    <a class="btn btn-warning"-->
-<!--       href="{% url 'shop_projects:confirm-delete-project' pk=object.pk %}">-->
-<!--       Archive</a>-->
-<!--    </div>-->

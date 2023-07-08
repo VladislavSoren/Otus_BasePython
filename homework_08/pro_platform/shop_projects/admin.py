@@ -37,7 +37,7 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         PaymentDetailsInline,
     ]
-    list_display = "id", "user", "promocode", "created_at"
+    list_display = "id", "user", "promocode", "created_at", "status"
     list_display_links = "id", "promocode"
 
 
