@@ -7,14 +7,25 @@ when Order is updated/created (save action)
 
 ## SharedTasks:
 - send mail, when signal `post_save` from Order received 
+- send mail, when signal new user is registered 
+
 
 ## Access restrictions
-- order list for non-authenticated users 
-- donat list for non-authenticated users
+- order list not available for non-authenticated users 
+- order details available only for `staff` users
+- only user with permission `delete_order` can delete it
+* also users without this permission cant see `Delete` button
+
+- donat list not available for non-authenticated users
+- donat details available only for `staff` users
+- only user with permission `delete_donat` can delete it
+* also users without this permission cant see `Delete` button
+
 
 ## User:
-- registration
-- 
+- registration page
+- logging page
+
 
 ## Project start commands
 Root level:

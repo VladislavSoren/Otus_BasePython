@@ -44,6 +44,15 @@ python manage.py startapp auth
 Notes:
 - through debugsqlshell we can to display mro (Method Resolution Order)
 of the Class
+- we can grant permission to user several ways:
+    - through debugsqlshell
+    - through admin panel (good choice)
+    - by creating your own template (like admin panel)
+- we can set permissions for the project in:
+    - models
+    - templates
+    - views
+    - groups
 
 ToDoList:
 - Creating OrderPaymentDetails when it fill
