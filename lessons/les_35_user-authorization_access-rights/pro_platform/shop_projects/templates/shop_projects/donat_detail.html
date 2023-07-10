@@ -24,9 +24,14 @@
       <a class="btn btn-success"
          href="{% url 'shop_projects:update-donat' pk=object.pk %}">
           Update</a>
+
+
+        {% if perms.shop_projects.delete_donat %}
         <a class="btn btn-warning"
            href="{% url 'shop_projects:confirm-delete-donat' pk=object.pk %}">
            Archive</a>
+        {% endif %}
+
         </div>
 
   <div>

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 from config import RABBIT_USER, RABBIT_PASS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -188,3 +190,7 @@ CELERY_CACHE_BACKEND = 'django-cache'
 
 # ignore warning
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+LOGIN_URL = reverse_lazy('auth_block:login')
+
+# DJANGO_SETTINGS_MODULE=pro_platform.settings

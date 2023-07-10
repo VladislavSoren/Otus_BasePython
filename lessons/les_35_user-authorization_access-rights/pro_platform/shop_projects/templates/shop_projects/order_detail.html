@@ -32,10 +32,13 @@
          href="{% url 'shop_projects:update-order' pk=pk %}">
           Update</a>
 
+        {% if perms.shop_projects.delete_order %}
         <a class="btn btn-warning"
            href="{% url 'shop_projects:confirm-delete-order' pk=pk %}">
            Archive</a>
-        </div>
+
+        {% endif %}
+    </div>
 
   <div>
     <a class="btn btn-secondary"

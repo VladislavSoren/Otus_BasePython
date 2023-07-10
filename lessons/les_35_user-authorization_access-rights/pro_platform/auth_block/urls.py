@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 from .views import (
     LoginView,
-    LogoutView,
+    LogoutView, RegisterView,
 )
 
 app_name = "auth_block"
@@ -19,9 +19,14 @@ urlpatterns = [
 
     path(
         "logout/",
-        # TemplateView.as_view(template_name="auth_block/login.html"),
         LogoutView.as_view(),
         name="logout"
+    ),
+
+    path(
+        "register/",
+        RegisterView.as_view(),
+        name="register"
     ),
 
     path("me/", TemplateView.as_view(template_name="auth_block/me.html"), name="about-me"),

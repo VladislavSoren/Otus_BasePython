@@ -1,3 +1,10 @@
+from django.contrib.auth.decorators import (
+    login_required,
+    permission_required,
+    user_passes_test,
+)
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -8,57 +15,7 @@ from shop_projects.forms import OrderForm
 from shop_projects.models import Order
 
 
-class OrdersListView(ListView):
-    # queryset = (
-    #     Order
-    #     .objects
-    #     .filter(status=Order.Status.AVAILABLE)
-    #     .order_by("id")
-    #     .prefetch_related("user", "projects")
-    #     .defer(
-    #         "promocode",
-    #         "created_at",
-    #         "updated_at",
-    #     )
-    #     .all()
-    # )
-
-    queryset = (
-        Order
-        .objects
-        .filter(status=Order.Status.AVAILABLE)
-        .order_by("id")
-        .prefetch_related("projects")
-        .values('id')
-        .annotate(Sum('projects__price'))
-    )
-
-    queryset_aggr_proj_sum = (
-        Order
-        .objects
-        .filter(status=Order.Status.AVAILABLE)
-        .order_by("id")
-        .prefetch_related("user", "projects")
-        .defer(
-            "promocode",
-            "created_at",
-            "updated_at",
-        )
-        .all()
-    )
-
-    # queryset_aggr_proj_sum
-
-    extra_context = {
-        "categories": queryset,
-        "class_name": Order._meta.object_name.lower(),
-        "class_name_plural": Order._meta.verbose_name_plural,
-        "orders_projs_sum": queryset_aggr_proj_sum,
-    }
-
-    # queryset_aggr_proj_sum[0]['projects__price__sum']
-
-
+@login_required
 def order_list_view(request: HttpRequest) -> HttpResponse:
     query_orders = (
         Order
@@ -97,6 +54,11 @@ def order_list_view(request: HttpRequest) -> HttpResponse:
     )
 
 
+def is_staff_check(user):
+    return user.is_staff
+
+
+@user_passes_test(is_staff_check)
 def order_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
     queryset = (
         Order
@@ -161,7 +123,9 @@ class OrderUpdateView(UpdateView):
         )
 
 
-class OrderDeleteView(DeleteView):
+class OrderDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "shop_projects.delete_order"
+
     success_url = reverse_lazy("shop_projects:orders")
     queryset = (
         Order

@@ -1,3 +1,8 @@
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UserPassesTestMixin,
+)
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -6,7 +11,7 @@ from shop_projects.forms import DonatForm
 from shop_projects.models import Donat
 
 
-class DonatsListView(ListView):
+class DonatsListView(LoginRequiredMixin, ListView):
     queryset = (
         Donat
         .objects
@@ -23,7 +28,11 @@ class DonatsListView(ListView):
     }
 
 
-class DonatDetailView(DetailView):
+class DonatDetailView(UserPassesTestMixin, DetailView):
+
+    def test_func(self):
+        return self.request.user.is_staff
+
     queryset = (
         Donat
         .objects
@@ -71,7 +80,9 @@ class DonatUpdateView(UpdateView):
         )
 
 
-class DonatDeleteView(DeleteView):
+class DonatDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "shop_projects.delete_donat"
+
     success_url = reverse_lazy("shop_projects:donats")
     queryset = (
         Donat
@@ -85,3 +96,7 @@ class DonatDeleteView(DeleteView):
         self.object.status = Donat.Status.ARCHIVED
         self.object.save()
         return redirect(success_url)
+
+
+if __name__ == "__main__":
+    print(DonatDetailView.mro())

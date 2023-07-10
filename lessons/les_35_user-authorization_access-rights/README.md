@@ -9,7 +9,12 @@ when Order is updated/created (save action)
 - send mail, when signal `post_save` from Order received 
 
 ## Access restrictions
+- order list for non-authenticated users 
+- donat list for non-authenticated users
 
+## User:
+- registration
+- 
 
 ## Project start commands
 Root level:
