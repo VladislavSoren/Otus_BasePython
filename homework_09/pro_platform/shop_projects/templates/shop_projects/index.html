@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Shop Index
+{% endblock %}
+
+{% block body %}
+
+  <div>
+    <p class="h3 my-3">Sections:</p>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'shop_projects:projects' %}">Projects</a>
+      </li>
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'shop_projects:categories' %}">Categories</a>
+      </li>
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'shop_projects:creators' %}">Creators</a>
+      </li>
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'shop_projects:donats' %}">Donats</a>
+      </li>
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'shop_projects:orders' %}">Orders</a>
+      </li>
+    </ul>
+  </div>
+{% endblock %}
+
+

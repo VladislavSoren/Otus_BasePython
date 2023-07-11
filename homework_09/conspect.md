@@ -39,4 +39,14 @@ kill the process:
 kill -9 id
 ```
 
-### dependency injections
+Если есть ошибка рип установке `psycopg2`:
+>ERROR: Failed building wheel for psycopg2
+
+Установи недостающие зависимости:
+```shell
+sudo apt-get install libpq-dev python3-dev
+```
+```shell
+sudo apt-get install gcc
+```
+

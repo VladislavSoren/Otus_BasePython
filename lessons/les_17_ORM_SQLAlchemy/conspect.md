@@ -12,6 +12,10 @@
 ```shell
 sudo apt-get install libpq-dev python3-dev
 ```
+```shell
+sudo apt-get install gcc
+```
+
 
 To Do list:
 * Установить Zsh в Ubuntu (красивая подсветка в терминале)
