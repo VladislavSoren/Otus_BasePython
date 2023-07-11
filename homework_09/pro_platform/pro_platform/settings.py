@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -194,3 +194,6 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 LOGIN_URL = reverse_lazy('auth_block:login')
 
 # DJANGO_SETTINGS_MODULE=pro_platform.settings
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
