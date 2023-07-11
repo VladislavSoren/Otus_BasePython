@@ -1,17 +1,15 @@
-"""
-создайте асинхронные функции для выполнения запросов к ресурсам (используйте aiohttp)
-"""
-
 import asyncio
 import base64
+import io
+import os
 from dataclasses import dataclass
 
+import numpy as np
+from PIL import Image
 from aiohttp import ClientSession
 
-# from config import log
 
-USERS_DATA_URL = "https://jsonplaceholder.typicode.com/users"
-POSTS_DATA_URL = "https://jsonplaceholder.typicode.com/posts"
+# from config import log
 
 
 @dataclass
@@ -28,20 +26,10 @@ class Post:
     body: str
 
 
-# Getting list[json]
-async def fetch_json(url: str, data_type: str) -> list[dict]:
-    # log.info(f"getting for {data_type} json...")
-    async with ClientSession() as session:
-        async with session.get(url) as response:
-            data: list[dict] = await response.json()
-            # log.info(f"json for {data_type} is gotten!")
-            return data
-
-
-async def send_image(url: str, data):
+async def get_prediction(url: str, data):
     async with ClientSession() as session:
         async with session.post(url, json=data) as response:
-            data: list[dict] = await response.json()
+            data: dict = await response.json()
             return data
 
 
@@ -52,29 +40,31 @@ def image_bytes_to_str(im_path):
     return image_str
 
 
+def show_input_image(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    image.show()
+
+
+SEX_AGE_HUMANS_DETECTION_SERVICE_URL = " http://127.0.0.1:9988/image"
+
+
 async def main():
-    # url = " http://127.0.0.1:9988"
-    # jsons_list: list[dict] = await fetch_json(url, 'data_type')
-    # print(jsons_list)
+    im_path = "/home/soren/PycharmProjects/Otus_BasePython/homework_09/images/HUAX6X2xm7k.jpg"
 
-    im_paths = {
-        # "/home/soren/PycharmProjects/Otus_BasePython/homework_09/images/giraOoKa4pk.jpg",
-        "/home/soren/PycharmProjects/Otus_BasePython/homework_09/images/HUAX6X2xm7k.jpg",
-        # "/home/soren/PycharmProjects/Otus_BasePython/homework_09/images/iS44rt72SnU.jpg",
-    }
+    # serialization
+    data = {}
+    data['user'] = 'Soren'
+    data['image'] = image_bytes_to_str(im_path)
+    data['image_name'] = os.path.basename(im_path)
 
-    for im_path in im_paths:
-        data = {}
+    # sending image to service and receiving  response with tagged image
+    json_input: dict = await get_prediction(SEX_AGE_HUMANS_DETECTION_SERVICE_URL, data)
 
-        data['image'] = image_bytes_to_str(im_path)
-        data['user'] = 'Soren'
+    #  deserialization
+    image_bytes = base64.b64decode(json_input["tagged_img"])
 
-        url = " http://127.0.0.1:9988/image"
-        jsons_list: list[dict] = await send_image(url, data)
-
-    return jsons_list
-
-
+    # displaying tagged image
+    show_input_image(image_bytes)
 
 
 if __name__ == "__main__":
