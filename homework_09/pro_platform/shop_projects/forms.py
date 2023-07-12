@@ -2,7 +2,7 @@ from django import forms
 
 from .models import (
     Project,
-    Category, Creator, Donat, Order, ImageSexAgeDetect,
+    Category, Creator, Donat, Order,
 )
 
 
@@ -81,9 +81,3 @@ class OrderForm(BaseForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-
-class ImageSexAgeDetectForm(forms.ModelForm):
-    class Meta:
-        model = ImageSexAgeDetect
-        fields = ['name', 'ImgSexAgeDetect']

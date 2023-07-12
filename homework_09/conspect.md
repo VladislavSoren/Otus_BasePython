@@ -10,16 +10,11 @@ https://stackoverflow.com/questions/54660800/python-convert-image-to-json
 Open PIL image from byte file
 https://stackoverflow.com/questions/32908639/open-pil-image-from-byte-file
 
-Если программу (модуль, библиотеку) рассматривать как чёрный ящик, 
-то API — это набор «ручек», которые доступны пользователю данного ящика и 
-которые он может вертеть и переключать.
+Django Image Upload
+https://www.javatpoint.com/django-image-upload
+https://www.geeksforgeeks.org/python-uploading-images-in-django/
 
-Программные компоненты взаимодействуют друг с другом посредством API. 
-При этом обычно компоненты образуют иерархию — высокоуровневые компоненты 
-используют API низкоуровневых компонентов, а те, в свою очередь, 
-используют API ещё более низкоуровневых компонентов.
-***
->Swagger - это интерактивная документация на базе спецификации **OpenApi** 
+
 
 ### Полезные команды:
 
@@ -50,3 +45,5 @@ sudo apt-get install libpq-dev python3-dev
 sudo apt-get install gcc
 ```
 
+Questions:
+- How config `static(settings.MEDIA_URL` in prod?

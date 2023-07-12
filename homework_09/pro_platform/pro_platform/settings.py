@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
     "auth_block.apps.AuthBlockConfig",
     "shop_projects.apps.ShopProjectsConfig",
+    "my_projects.apps.MyProjectsConfig",
 ]
 
 if DEBUG:
@@ -195,5 +196,12 @@ LOGIN_URL = reverse_lazy('auth_block:login')
 
 # DJANGO_SETTINGS_MODULE=pro_platform.settings
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+########
+# Media
+########
+
+# Base url to serve media files
 MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

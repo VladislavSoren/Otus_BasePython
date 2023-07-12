@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  My projects Index
+{% endblock %}
+
+{% block body %}
+
+  <div>
+    <p class="h3 my-3">Sections:</p>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'my_projects:sex_age_detection' %}">Sex-age humans detection</a>
+      </li>
+    </ul>
+  </div>
+{% endblock %}
+
+

@@ -2,7 +2,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from .views.image_view import image_for_predict_view, success
 from .views.index import ShopIndexView
 from .views.projects import (
     ProjectsListView,
@@ -45,7 +44,7 @@ app_name = "shop_projects"
 
 urlpatterns = [
     path('', ShopIndexView.as_view(), name="index"),
-    
+
     path('projects', ProjectsListView.as_view(), name="projects"),
     path("projects/create/", ProjectCreateView.as_view(), name="create-project"),
     path("projects/<int:pk>/", ProjectDetailView.as_view(), name="project-details"),
@@ -76,8 +75,6 @@ urlpatterns = [
     path("orders/<int:pk>/update/", OrderUpdateView.as_view(), name="update-order"),
     path("orders/<int:pk>/confirm-delete/", OrderDeleteView.as_view(), name="confirm-delete-order"),
 
-    path('image_upload', image_for_predict_view, name='image_upload'),
-    path('success', success, name='success'),
 ]
 
 if settings.DEBUG:
