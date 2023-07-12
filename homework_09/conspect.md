@@ -14,7 +14,11 @@ Django Image Upload
 https://www.javatpoint.com/django-image-upload
 https://www.geeksforgeeks.org/python-uploading-images-in-django/
 
+Django Async Model Save()
+https://stackoverflow.com/questions/73268954/django-async-model-save
 
+Django async HTTP requests with asyncio and aiohttp
+https://www.youtube.com/watch?v=28KFBqi2JrA
 
 ### Полезные команды:
 

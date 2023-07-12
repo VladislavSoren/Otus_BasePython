@@ -40,7 +40,7 @@ def save_tagged_image(image_bytes, path_tagged_image: str):
 SEX_AGE_HUMANS_DETECTION_SERVICE_URL = " http://127.0.0.1:9988/image"
 
 
-async def image_request(request):
+def image_request(request):
     if request.method == 'POST':
         form = ImageSexAgeDetectForm(request.POST, request.FILES)
         if form.is_valid():
@@ -79,7 +79,7 @@ async def image_request(request):
             )
     else:
         form = ImageSexAgeDetectForm()
-
+        # await sync_to_async(form.save)()
     return render(
         request,
         'my_projects/image_sex_age_detect.html',
