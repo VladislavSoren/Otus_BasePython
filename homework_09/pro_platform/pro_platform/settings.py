@@ -14,7 +14,7 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 
-from config import RABBIT_USER, RABBIT_PASS
+from config import RABBIT_USER, RABBIT_PASS, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -106,11 +106,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "pro_platform",
-        'USER': "soren",
-        'PASSWORD': "pass123",
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
         'HOST': "127.0.0.1",
-        'PORT': "9999",
+        'PORT': DB_PORT,
     }
 }
 
