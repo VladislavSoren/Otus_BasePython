@@ -20,6 +20,10 @@ https://stackoverflow.com/questions/73268954/django-async-model-save
 Django async HTTP requests with asyncio and aiohttp
 https://www.youtube.com/watch?v=28KFBqi2JrA
 
+django-async-views-examples
+https://arunrocks.com/django-async-views-examples/
+
+
 ### Полезные команды:
 
 > бращение к серверу с передачей аргументов в запросе:
