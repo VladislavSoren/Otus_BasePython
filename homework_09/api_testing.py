@@ -44,7 +44,7 @@ SEX_AGE_HUMANS_DETECTION_SERVICE_URL = "http://127.0.0.1:6688/image"
 
 
 def main():
-    path_input_image_abs = '/home/soren/PycharmProjects/Otus_BasePython/homework_09/images/img1.jpg'
+    path_input_image_abs = '/home/soren/PycharmProjects/Otus_BasePython/homework_09/images/img4.jpeg'
 
     # serialization
     json_out = {}

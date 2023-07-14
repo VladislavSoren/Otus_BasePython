@@ -45,7 +45,7 @@ def save_tagged_image(image_bytes, path_tagged_image: str):
     image.save(path_tagged_image)
 
 
-SEX_AGE_HUMANS_DETECTION_SERVICE_URL = " http://127.0.0.1:9988/image"
+SEX_AGE_HUMANS_DETECTION_SERVICE_URL = "http://127.0.0.1:4888/image"
 
 
 # async def image_request(request):

@@ -30,13 +30,14 @@
       {% endif %}
     </div>
 
-
+<!--Projects navbar-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
 
+<!--Sex-age human detection-->
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle"
            id="navbarDropdown0"
@@ -50,10 +51,25 @@
             <a class="dropdown-item" href="{% url 'my_projects:sex_age_detection' %}">Try</a>
             <a class="dropdown-item" href="{% url 'my_projects:sex_age_detection' %}">About</a>
           </div>
-
-
-
         </li>
+<!--Car num detection-->
+
+
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           id="navbarDropdown01"
+           role="button"
+           data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false">
+            Car num detection
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{% url 'my_projects:car_num_detection' %}">Try</a>
+            <a class="dropdown-item" href="{% url 'my_projects:car_num_detection' %}">About</a>
+          </div>
+        </li>
+
       </ul>
     </div>
   </nav>
@@ -67,6 +83,9 @@
     <ul class="list-group">
       <li class="list-group-item list-group-item-action">
         <a href="{% url 'my_projects:sex_age_detection' %}">Sex-age humans detection</a>
+      </li>
+      <li class="list-group-item list-group-item-action">
+        <a href="{% url 'my_projects:sex_age_detection' %}">Car numbers detection</a>
       </li>
     </ul>
   </div>
