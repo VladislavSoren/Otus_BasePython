@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from .views.index import ShopIndexView
+from .views.index import ShopIndexView, get_task_info
 from .views.projects import (
     ProjectsListView,
     ProjectDetailView,
@@ -44,6 +44,7 @@ app_name = "shop_projects"
 
 urlpatterns = [
     path('', ShopIndexView.as_view(), name="index"),
+    path("orders/task/<task_id>/", get_task_info, name="get-order-task-id"),
 
     path('projects', ProjectsListView.as_view(), name="projects"),
     path("projects/create/", ProjectCreateView.as_view(), name="create-project"),

@@ -55,3 +55,4 @@ sudo apt-get install gcc
 
 Questions:
 - How config `static(settings.MEDIA_URL` in prod?
+- Django автоматически создают тестовую БД (создаёт ли для постгрес?)
