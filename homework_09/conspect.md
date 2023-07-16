@@ -53,6 +53,25 @@ sudo apt-get install libpq-dev python3-dev
 sudo apt-get install gcc
 ```
 
+Get dump of app all data
+```shell
+python manage.py dumpdata shop_projects
+```
+
+Get dump of particular data
+```shell
+python manage.py dumpdata shop_projects.Category > shop_projects/fixtures/cat-fix.json
+```
+
+Load data from dumps
+```shell
+python manage.py loaddata shop_projects/fixtures/cat-fix.json
+```
+Load users
+```shell
+python manage.py dumpdata auth.user  > shop_projects/fixtures/user-fix.json
+```
+
 Questions:
 - How config `static(settings.MEDIA_URL` in prod?
 - Django автоматически создают тестовую БД (создаёт ли для постгрес?)
