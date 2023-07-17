@@ -6,6 +6,8 @@ from django.contrib.auth.models import AbstractUser
 from django.test import TestCase
 from django.urls import reverse
 
+from pro_platform.fake import fake
+
 UserModel: Type[AbstractUser] = get_user_model()
 
 
@@ -13,8 +15,8 @@ class GetTaskInfoTestCase(TestCase):
 
     # Выполняется перед каждым тестом
     def setUp(self) -> None:
-        self.username = "user_testing"
-        self.password = "superpass123!"
+        self.username = fake.user_name()
+        self.password = fake.password(length=12)
         self.user: AbstractUser = UserModel.objects.create_user(
             username=self.username,
             password=self.password,
@@ -22,7 +24,7 @@ class GetTaskInfoTestCase(TestCase):
         print("created", self.user)
 
     def test_anon_user_no_access(self):
-        url = reverse("shop_projects:get-order-task-id", kwargs={"task_id": "123"})
+        url = reverse("shop_projects:get-order-task-id", kwargs={"task_id": str(fake.pyint())})
         response = self.client.get(url)
         # self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("auth_block:login") + f'?next={url}')
@@ -33,7 +35,7 @@ class GetTaskInfoTestCase(TestCase):
             username=self.username,
             password=self.password,
         )
-        task_id = "42"
+        task_id = str(fake.pyint())
         url = reverse("shop_projects:get-order-task-id", kwargs={"task_id": task_id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
