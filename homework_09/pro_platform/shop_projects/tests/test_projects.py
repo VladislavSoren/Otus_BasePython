@@ -6,10 +6,11 @@ from shop_projects.models import Project
 
 class ProjectsListViewTestCase(TestCase):
     fixtures = [
-        "cat-fix.json",
-        "creat-fix.json",
-        "proj-fix.json",
-        "user-fix.json",
+        "users.json",
+        "creators.json",
+        "categories.json",
+        "projects.json",
+
     ]
 
     def test_ok(self):

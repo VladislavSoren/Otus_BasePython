@@ -1,9 +1,10 @@
 #!/bin/bash
 
 docker compose up -d
-docker compose -f docker-compose_rabbit.yml up -d
 
+sleep 15
 cd pro_platform
 
+poetry install
 python manage.py migrate
 python manage.py runserver

@@ -55,7 +55,7 @@ sudo apt-get install gcc
 
 Get dump of app all data
 ```shell
-python manage.py dumpdata shop_projects
+python manage.py dumpdata shop_projects > shop_projects/fixtures/all_data.json
 ```
 
 Get dump of particular data
