@@ -1,4 +1,3 @@
-from random import choice
 
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
@@ -17,8 +16,8 @@ class CategoryFactory(DjangoModelFactory):
         django_get_or_create = ("name",)
 
     name = factory.Faker("word")
-    description = factory.Faker('sentence', nb_words=30)
-    status = True
+    description = factory.Faker('sentence', nb_words=15)
+    status = Category.Status.AVAILABLE
 
 
 class UserFactory(DjangoModelFactory):
@@ -69,6 +68,7 @@ class OrderFactory(DjangoModelFactory):
     user = factory.Iterator(User.objects.all())
     # products = factory.Iterator(Product.objects.all())
     promocode = factory.Faker("word")
+    # due to RelatedFactory OrderPaymentDetails will create ONLY AFTER Order creation
     payment_details = factory.RelatedFactory(
         OrderPaymentDetailsFactory,
         factory_related_name="order",
@@ -76,16 +76,17 @@ class OrderFactory(DjangoModelFactory):
         payed_at=factory.LazyFunction(timezone.now)
     )
 
+    # ManyToManyField
     @factory.post_generation
-    def products(self, create, extracted, **kwargs):
+    def projects(self, create, extracted, **kwargs):
         if not create:
             # Simple build, do nothing.
             return
 
         if extracted:
             # A list of groups were passed in, use them
-            for product in extracted:
-                self.products.add(product)
+            for project in extracted:
+                self.projects.add(project)
 
     # branches of creation by flags (Trait name = True)
     class Params:
@@ -103,6 +104,18 @@ class OrderFactory(DjangoModelFactory):
             payment_details__payed_at=factory.LazyFunction(timezone.now),
         )
 
+
+class ProjectFactoryBasedDB(DjangoModelFactory):
+    class Meta:
+        model = Project
+
+    name = factory.Faker("sentence", nb_words=3)
+    price = factory.Faker('pydecimal', min_value=0, max_value=1000)
+    description = factory.LazyAttribute(lambda o: f'{o.name} service')
+    # important!!! number of category should be equal creator (zip analogy)
+    category = factory.Iterator([i for i in Category.objects.all()])  # with category from db
+    creator = factory.Iterator([i for i in Creator.objects.all()])  # with creator from db
+    status = factory.Iterator(Project.Status.values)
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -127,5 +140,15 @@ class Command(BaseCommand):
         # projects = ProjectFactory.create_batch(2)
 
         # order = OrderFactory.build(empty_promocode=True)
-        order = OrderFactory.build(paid=True)
-        print(order, [order.promocode, order.payment_details.card_ends_with])
+        # order = OrderFactory.build(paid=True)
+        # print(order, [order.promocode, order.payment_details.card_ends_with])
+
+        # filling M2M table
+        # order = OrderFactory.create(
+        #     projects=Project.objects.all()[:3]
+        # )
+        # print(order, order.projects)
+
+        # CategoryFactory.create()
+        # CreatorFactory.create()
+        ProjectFactoryBasedDB.create_batch(5)

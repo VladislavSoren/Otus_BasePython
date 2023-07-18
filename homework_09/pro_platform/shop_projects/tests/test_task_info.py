@@ -21,7 +21,6 @@ class GetTaskInfoTestCase(TestCase):
             username=self.username,
             password=self.password,
         )
-        print("created", self.user)
 
     def test_anon_user_no_access(self):
         url = reverse("shop_projects:get-order-task-id", kwargs={"task_id": str(fake.pyint())})
@@ -47,5 +46,3 @@ class GetTaskInfoTestCase(TestCase):
                 "name": None,  # т.к. задачу никак НЕ называли
             }
         )
-        print('...........')
-        print(response.context)
