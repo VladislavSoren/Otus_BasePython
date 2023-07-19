@@ -40,3 +40,9 @@ Project level:
 Alternative start:
 - bash start_project.sh
 - bash start_celery.sh
+
+Tests start command on Project level:
+- `python manage.py test`
+### Test coverage:
+- auth_block app
+- shop_projects app

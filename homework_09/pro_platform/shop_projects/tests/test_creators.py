@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from pro_platform.fake import fake
 
-from shop_projects.models import Creator, Category, Project
+from shop_projects.models import Creator, Project
 
 from django import db
 

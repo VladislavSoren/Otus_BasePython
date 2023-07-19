@@ -1,5 +1,4 @@
 import re
-import sys
 from http import HTTPStatus
 from typing import Type
 
@@ -10,7 +9,7 @@ from django.urls import reverse, reverse_lazy
 
 from pro_platform.fake import fake
 
-from shop_projects.models import Donat, Project
+from shop_projects.models import Donat
 
 from django import db
 
