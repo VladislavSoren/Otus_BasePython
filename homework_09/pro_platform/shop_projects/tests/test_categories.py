@@ -1,4 +1,5 @@
 import re
+import sys
 
 from django.db.models import Q
 from django.test import TestCase
@@ -15,13 +16,28 @@ class TestCategoryTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         from shop_projects.factories.category import CategoryFactory
+        from shop_projects.factories.creator import CreatorFactory
 
-        # scope on other methods
+        # create one new category and 2 creators for factory.Iterator balance in project
+        # len(["default", "new"]) = len(["creator1", "creator2"])
         cls.category = CategoryFactory.create()
+        cls.creators = CreatorFactory.create_batch(2)
+
+        if 'shop_projects.factories.project' in sys.modules:
+            del sys.modules['shop_projects.factories.project']
+        from shop_projects.factories.project import ProjectFactoryBasedDB
+
+        # create some objects for our creator
+        cls.nb_project = fake.pyint(min_value=3, max_value=10)
+        cls.projects = ProjectFactoryBasedDB.create_batch(cls.nb_project)
 
     # removal of object
     @classmethod
     def tearDownClass(cls):
+        for project in cls.projects:
+            project.delete()
+        for creator in cls.creators:
+            creator.delete()
         cls.category.delete()
 
     # checking creation of object
@@ -45,6 +61,19 @@ class TestCategoryTestCase(TestCase):
         self.assertContains(response, self.category.description)
         self.assertContains(response, self.category.name)
         self.assertContains(response, self.category.pk)
+
+        # checking displaying projects for checking creator
+        category_qs = (
+            Category
+            .objects
+            .filter(id=self.category.pk)
+            .prefetch_related("projects_for_cats")
+            .first()
+        )
+        self.assertQuerySetEqual(
+            qs=[category.pk for category in category_qs.projects_for_cats.all()],
+            values=(p.pk for p in response.context["object"].projects_for_cats.all()),
+        )
 
         #######################################
         # checking refs (active functionality)
@@ -134,13 +163,3 @@ class TestCategoriesListTestCase(TestCase):
         # check availability "back to index" ref (button)
         count = len(re.findall(r'href="/shop_projects/"', response_content_str))
         self.assertEqual(count, 1)
-
-        # assertInHTML work is very bad!!!
-        # self.assertInHTML("""href=&quot;/shop_projects/categories/create/&quot;""", response_content_str, count=1)
-        # self.assertInHTML('Create new category', response_content_str, count=1)
-
-        # # self.assertContains(response, self.category.name)
-        # # self.assertContains(response, self.category.pk)
-
-# href=&quot;/shop_projects/categories/create/&quot;
-# href=&quot;/shop_projects/categories/create/&quot;

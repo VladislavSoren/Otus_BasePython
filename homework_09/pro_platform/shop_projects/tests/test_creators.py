@@ -1,4 +1,5 @@
 import re
+import sys
 
 from django.test import TestCase
 from django.urls import reverse
@@ -9,20 +10,24 @@ from shop_projects.models import Creator, Category, Project
 
 from django import db
 
-from shop_projects.factories.creator import CreatorFactory
-
 
 class TestCreatorTestCase(TestCase):
 
     # fill test db
     @classmethod
     def setUpClass(cls):
+
+        from shop_projects.factories.creator import CreatorFactory
+
         # create "creator" to equalize with number of categories (new creator - default category)
         # its it is necessary for correct work "factory.Iterator" (several fields work like zip)
         cls.creator = CreatorFactory.create()
 
         # import ProjectFactory from separate module to avoid using prod db during module initialization
         # here ProjectFactory will initialize with test db
+        # also delete module cache to reload "factories.project" module
+        if 'shop_projects.factories.project' in sys.modules:
+            del sys.modules['shop_projects.factories.project']
         from shop_projects.factories.project import ProjectFactoryBasedDB
         # print(db.connections.databases)
 

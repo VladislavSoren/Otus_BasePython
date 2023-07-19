@@ -1,4 +1,3 @@
-
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 
@@ -7,7 +6,7 @@ from django.db.models.signals import post_save
 from django.utils import timezone
 from factory.django import DjangoModelFactory
 
-from shop_projects.models import Category, Project, Creator, OrderPaymentDetails, Order
+from shop_projects.models import Category, Project, Creator, OrderPaymentDetails, Order, Donat
 
 
 class CategoryFactory(DjangoModelFactory):
@@ -39,21 +38,16 @@ class CreatorFactory(DjangoModelFactory):
     status = True
 
 
-class ProjectFactory(DjangoModelFactory):
+class ProjectFactoryWithSubFactory(DjangoModelFactory):
     class Meta:
         model = Project
 
     name = factory.Faker("sentence", nb_words=3)
     price = factory.Faker('pydecimal', min_value=0, max_value=1000)
-    # description = factory.Faker('sentence', nb_words=30)
     description = factory.LazyAttribute(lambda o: f'{o.name} service')
-    # category = factory.SubFactory(CategoryFactory)  # with creating new category
-    category = factory.Iterator([i for i in Category.objects.all()])  # with created category
-    # creator = factory.SubFactory(CreatorFactory)
-    creator = factory.Iterator([i for i in Creator.objects.all()])  # work
-    # creator = factory.LazyFunction(choice([i.user.id for i in Creator.objects.all()]))  # try random choice
+    category = factory.SubFactory(CategoryFactory)  # with creating new category
+    creator = factory.SubFactory(CreatorFactory)  # with creating new creator
     status = factory.Iterator(Project.Status.values)
-
 
 class OrderPaymentDetailsFactory(DjangoModelFactory):
     class Meta:
@@ -117,6 +111,28 @@ class ProjectFactoryBasedDB(DjangoModelFactory):
     creator = factory.Iterator([i for i in Creator.objects.all()])  # with creator from db
     status = factory.Iterator(Project.Status.values)
 
+
+class DonatFactory(DjangoModelFactory):
+    class Meta:
+        model = Donat
+
+    user = factory.Iterator(User.objects.all())
+    money = factory.Faker('pydecimal', min_value=0, max_value=300)
+    created_at = factory.LazyFunction(timezone.now)
+
+    # ManyToManyField
+    @factory.post_generation
+    def projects(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for project in extracted:
+                self.projects.add(project)
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Start factory boy")
@@ -149,6 +165,17 @@ class Command(BaseCommand):
         # )
         # print(order, order.projects)
 
-        # CategoryFactory.create()
-        # CreatorFactory.create()
-        ProjectFactoryBasedDB.create_batch(5)
+        # filling M2M table
+        # new_donat = DonatFactory.create(
+        #     projects=Project.objects.all()[3:6]
+        # )
+        # print(new_donat, new_donat.projects)
+
+
+        new_projects = ProjectFactoryWithSubFactory.create_batch(2)
+        new_donat = DonatFactory.create(
+            projects=new_projects
+
+        )
+        print(new_donat, new_donat.projects)
+
