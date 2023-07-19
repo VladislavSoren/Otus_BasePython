@@ -15,8 +15,6 @@ class TestCreatorTestCase(TestCase):
     def setUpClass(cls):
         # scope on other methods
         cls.creator = CreatorFactory.create()
-        # cls.creator_for_default_category = CreatorFactory.create()
-        # cls.category = CategoryFactory.create()
 
         print(Creator.objects.all())
         print(Category.objects.all())
@@ -24,20 +22,28 @@ class TestCreatorTestCase(TestCase):
 
         cls.nb_project = fake.pyint(min_value=2, max_value=7)
         print(cls.nb_project)
-        cls.projects = ProjectFactoryBasedDB.create_batch(cls.nb_project)
-        # cls.project = ProjectFactoryBasedDB.create()
+        # cls.projects = ProjectFactoryBasedDB.create_batch_custom(
+        #     cls.nb_project,
+        #     category=Category.objects.all(),
+        #     creator=Creator.objects.all()
+        # )
+        cls.projects = ProjectFactoryBasedDB.create_batch(
+            cls.nb_project,
+        )
+        print(Creator.objects.all())
+        print(Category.objects.all())
+        print(Project.objects.all())
 
+        # cls.project = ProjectFactoryBasedDB.create()
         print(Project.objects.all())
 
     # removal of object
     @classmethod
     def tearDownClass(cls):
-        # for project in cls.projects:
-        #     project.delete()
-        cls.project.delete()
-        # cls.category.delete()
+        for project in cls.projects:
+            project.delete()
+        # cls.project.delete()
         cls.creator.delete()
-        # cls.creator_for_default_category.delete()
 
     # checking creation of object
     def test_get_creator(self):

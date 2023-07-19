@@ -47,13 +47,13 @@ class ProjectFactoryWithSubFactory(DjangoModelFactory):
     price = factory.Faker('pydecimal', min_value=0, max_value=1000)
     description = factory.LazyAttribute(lambda o: f'{o.name} service')
     category = factory.SubFactory(CategoryFactory)  # with creating new category
-    creator = factory.SubFactory(CreatorFactory) # with creating new creator
+    creator = factory.SubFactory(CreatorFactory)  # with creating new creator
     # creator = factory.LazyFunction(choice([i.user.id for i in Creator.objects.all()]))  # doesnt work
     status = factory.Iterator(Project.Status.values)
 
 
 # create ONLY new project (user, creator from db)
-class ProjectFactoryBasedDB(DjangoModelFactory):
+class ProjectFactoryBasedDB(DjangoModelFactory, ):
     class Meta:
         model = Project
 
@@ -67,6 +67,12 @@ class ProjectFactoryBasedDB(DjangoModelFactory):
     print(Creator.objects.all())
     status = factory.Iterator(Project.Status.values)
 
+    # @classmethod
+    # def create_batch_custom(cls, size, **kwargs):
+    #     cls.category = factory.Iterator([i for i in kwargs["category"]])
+    #     cls.creator = factory.Iterator([i for i in kwargs["creator"]])
+    #
+    #     return super().create_batch(size)
 
 #
 # class OrderPaymentDetailsFactory(DjangoModelFactory):
@@ -119,6 +125,3 @@ class ProjectFactoryBasedDB(DjangoModelFactory):
 #         )
 
 
-
-# if __name__ == "__main__":
-#     ProjectFactoryBasedDB.create_batch(3)
