@@ -4,45 +4,37 @@ from django.test import TestCase
 from django.urls import reverse
 
 from pro_platform.fake import fake
-from shop_projects.factories import CreatorFactory, ProjectFactoryBasedDB, CategoryFactory
+
 from shop_projects.models import Creator, Category, Project
+
+from django import db
+
+from shop_projects.factories.creator import CreatorFactory
 
 
 class TestCreatorTestCase(TestCase):
 
-    # creation of object
+    # fill test db
     @classmethod
     def setUpClass(cls):
-        # scope on other methods
+        # create "creator" to equalize with number of categories (new creator - default category)
+        # its it is necessary for correct work "factory.Iterator" (several fields work like zip)
         cls.creator = CreatorFactory.create()
 
-        print(Creator.objects.all())
-        print(Category.objects.all())
-        print(Project.objects.all())
+        # import ProjectFactory from separate module to avoid using prod db during module initialization
+        # here ProjectFactory will initialize with test db
+        from shop_projects.factories.project import ProjectFactoryBasedDB
+        # print(db.connections.databases)
 
-        cls.nb_project = fake.pyint(min_value=2, max_value=7)
-        print(cls.nb_project)
-        # cls.projects = ProjectFactoryBasedDB.create_batch_custom(
-        #     cls.nb_project,
-        #     category=Category.objects.all(),
-        #     creator=Creator.objects.all()
-        # )
-        cls.projects = ProjectFactoryBasedDB.create_batch(
-            cls.nb_project,
-        )
-        print(Creator.objects.all())
-        print(Category.objects.all())
-        print(Project.objects.all())
+        # create some objects for our creator
+        cls.nb_project = fake.pyint(min_value=3, max_value=10)
+        cls.projects = ProjectFactoryBasedDB.create_batch(cls.nb_project)
 
-        # cls.project = ProjectFactoryBasedDB.create()
-        print(Project.objects.all())
-
-    # removal of object
+    # clear test db
     @classmethod
     def tearDownClass(cls):
         for project in cls.projects:
             project.delete()
-        # cls.project.delete()
         cls.creator.delete()
 
     # checking creation of object
@@ -66,6 +58,8 @@ class TestCreatorTestCase(TestCase):
         self.assertContains(response, self.creator.pk)
         self.assertContains(response, self.creator.user)
         self.assertContains(response, self.creator.rating)
+
+        # checking displaying projects for checking creator
         creator_qs = (
             Creator
             .objects
@@ -74,86 +68,81 @@ class TestCreatorTestCase(TestCase):
             .prefetch_related("projects_for_creators")
             .first()
         )
-        print(creator_qs, creator_qs.projects_for_creators.all())
-
-        ###################
-        # checking content
-        ###################
         self.assertQuerySetEqual(
             qs=[project.pk for project in creator_qs.projects_for_creators.all()],
             values=(p.pk for p in response.context["object"].projects_for_creators.all()),
         )
 
-        # #######################################
-        # # checking refs (active functionality)
-        # #######################################
-        # # receiving  html of response as str
-        # response_content: bytes = response.content
-        # response_content_str: str = response_content.decode()
-        #
-        # # check availability "Update" creator
-        # update_ref = f'/shop_projects/creators/{self.creator.pk}/update/'
-        # count = len(re.findall(f'href="{update_ref}"', response_content_str))
-        # self.assertEqual(count, 1)
-        #
-        # # check availability "Archive" creator
-        # archive_ref = f'/shop_projects/creators/{self.creator.pk}/confirm-delete/'
-        # count = len(re.findall(f'href="{archive_ref}"', response_content_str))
-        # self.assertEqual(count, 1)
-        #
-        # # check availability back to all creators (navbar and button)
-        # archive_ref = f'/shop_projects/creators'
-        # count = len(re.findall(f'href="{archive_ref}"', response_content_str))
-        # self.assertEqual(count, 2)
+        #######################################
+        # checking refs (active functionality)
+        #######################################
+        # receiving  html of response as str
+        response_content: bytes = response.content
+        response_content_str: str = response_content.decode()
 
-# 
-# class ProjectsListViewTestCase(TestCase):
-#     # instead of factory we use fixtures (take a lot of time)
-#     fixtures = [
-#         "users.json",
-#         "creators.json",
-#         "categories.json",
-#         "projects.json",
-# 
-#     ]
-# 
-#     def test_get_projects_list(self):
-#         url = reverse("shop_projects:projects")
-#         response = self.client.get(url)
-# 
-#         ##########################
-#         # checking right template
-#         ##########################
-#         self.assertTemplateUsed(response, "shop_projects/project_list.html")
-# 
-#         projects_qs = (
-#             Project
-#             .objects
-#             .filter(status=Project.Status.AVAILABLE)
-#             .order_by("id")
-#             .only("id")
-#             .all()
-#         )
-# 
-#         ###################
-#         # checking content
-#         ###################
-#         self.assertQuerySetEqual(
-#             qs=[project.pk for project in projects_qs],
-#             values=(p.pk for p in response.context["object_list"]),
-#         )
-# 
-#         #######################################
-#         # checking refs (active functionality)
-#         #######################################
-#         # receiving  html of response as str
-#         response_content: bytes = response.content
-#         response_content_str: str = response_content.decode()
-# 
-#         # check availability "create" (navbar and button)
-#         count = len(re.findall(r'href="/shop_projects/projects/create/"', response_content_str))
-#         self.assertEqual(count, 2)
-# 
-#         # check availability "back to index" ref (button)
-#         count = len(re.findall(r'href="/shop_projects/"', response_content_str))
-#         self.assertEqual(count, 1)
+        # check availability "Update" creator
+        update_ref = f'/shop_projects/creators/{self.creator.pk}/update/'
+        count = len(re.findall(f'href="{update_ref}"', response_content_str))
+        self.assertEqual(count, 1)
+
+        # check availability "Archive" creator
+        archive_ref = f'/shop_projects/creators/{self.creator.pk}/confirm-delete/'
+        count = len(re.findall(f'href="{archive_ref}"', response_content_str))
+        self.assertEqual(count, 1)
+
+        # check availability back to all creators (navbar and button)
+        archive_ref = f'/shop_projects/creators'
+        count = len(re.findall(f'href="{archive_ref}"', response_content_str))
+        self.assertEqual(count, 2)
+
+
+class ProjectsListViewTestCase(TestCase):
+    # instead of factory we use fixtures (take a lot of time)
+    fixtures = [
+        "users.json",
+        "creators.json",
+        "categories.json",
+        "projects.json",
+
+    ]
+
+    def test_get_projects_list(self):
+        url = reverse("shop_projects:projects")
+        response = self.client.get(url)
+
+        ##########################
+        # checking right template
+        ##########################
+        self.assertTemplateUsed(response, "shop_projects/project_list.html")
+
+        projects_qs = (
+            Project
+            .objects
+            .filter(status=Project.Status.AVAILABLE)
+            .order_by("id")
+            .only("id")
+            .all()
+        )
+
+        ###################
+        # checking content
+        ###################
+        self.assertQuerySetEqual(
+            qs=[project.pk for project in projects_qs],
+            values=(p.pk for p in response.context["object_list"]),
+        )
+
+        #######################################
+        # checking refs (active functionality)
+        #######################################
+        # receiving  html of response as str
+        response_content: bytes = response.content
+        response_content_str: str = response_content.decode()
+
+        # check availability "create" (navbar and button)
+        count = len(re.findall(r'href="/shop_projects/projects/create/"', response_content_str))
+        self.assertEqual(count, 2)
+
+        # check availability "back to index" ref (button)
+        count = len(re.findall(r'href="/shop_projects/"', response_content_str))
+        self.assertEqual(count, 1)
